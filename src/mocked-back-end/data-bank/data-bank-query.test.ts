@@ -69,20 +69,20 @@ describe("DataBankQuery", () => {
     });
     describe("when table does not exist", () => {
       it("create", async () => {
-        const a = createDbQuery<Table>("table", { id: 3, name: "mary" });
-        await expect(a).rejects.toEqual("Table does not exists on data bank");
+        const result = createDbQuery<Table>("table", { id: 3, name: "mary" });
+        await expect(result).rejects.toEqual("Table does not exists on data bank");
       });
       it("read", async () => {
-        const a = readDbQuery<Table>("table");
-        await expect(a).rejects.toEqual("Table does not exists on data bank");
+        const result = readDbQuery<Table>("table");
+        await expect(result).rejects.toEqual("Table does not exists on data bank");
       });
       it("update", async () => {
-        const a = updateDbQuery<Table>("table", "id", { id: 3, name: "mary" });
-        await expect(a).rejects.toEqual("Table does not exists on data bank");
+        const result = updateDbQuery<Table>("table", "id", { id: 3, name: "mary" });
+        await expect(result).rejects.toEqual("Table does not exists on data bank");
       });
       it("delete", async () => {
-        const a = deleteDbQuery<Table>("table", "id", 3);
-        await expect(a).rejects.toEqual("Table does not exists on data bank");
+        const result = deleteDbQuery<Table>("table", "id", 3);
+        await expect(result).rejects.toEqual("Table does not exists on data bank");
       });
     });
   });
