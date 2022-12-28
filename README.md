@@ -8,7 +8,7 @@ The students can consult their information as well, see their progress and worko
 
 This application is built with React framework in TypeScript, currently, it only has unit tests using jest.
 
-> :warning: **Disclaimer** since this project is a personal work to improve and show the author front-end skills, it doesn't have back-end API. But, it has workaround to mock and simulate async requests on the `mock-back-end` directory. The front-end app should deal with back-and as a black box and be very uncoupled from its implementation, then, if someday the author decides to create a back-end API, the necessity to change front-end code will be minimal.
+> :warning: **Disclaimer** since this project is a personal work to improve and show the author front-end skills, it doesn't have back-end API. But, it has workaround to mock and simulate async requests on the `mockBackEnd` directory. The front-end app should deal with back-and as a black box and be very uncoupled from its implementation, then, if someday the author decides to create a back-end API, the necessity to change front-end code will be minimal.
 
 ### Instructions
 

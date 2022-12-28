@@ -6,7 +6,7 @@ import {
   readDbQuery,
   setIsDataBankInitialized,
   updateDbQuery
-} from "./data-bank-query";
+} from "./dataBankQuery";
 
 type Table = { id: number; name: string };
 describe("DataBankQuery", () => {

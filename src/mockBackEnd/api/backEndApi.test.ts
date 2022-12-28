@@ -1,8 +1,8 @@
 import { StatusCode } from "../../models/HttpClient";
-import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../data-bank/data-bank-query";
-import { BackEndApi } from "./back-end-api";
+import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../dataBank/dataBankQuery";
+import { BackEndApi } from "./backEndApi";
 
-jest.mock("../data-bank/data-bank-query");
+jest.mock("../dataBank/dataBankQuery");
 describe("BackEndApi", () => {
   type MockEntity = { id: number; name: string };
   type BackEndApiMethod = "post" | "get" | "patch" | "delete";

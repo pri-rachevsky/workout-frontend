@@ -1,12 +1,12 @@
 import { StatusCode } from "../../models/HttpClient";
-import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../data-bank/data-bank-query";
+import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../dataBank/dataBankQuery";
 import {
   SuccessfulCreateAndUpdateResponse,
   FailedResponse,
   SuccessfulDeleteResponse,
   SuccessfulGetResponse,
   SuccessfulResponse
-} from "./back-end-api.d";
+} from "./backEndApi.d";
 
 export class BackEndApi {
   public static async post<T>(

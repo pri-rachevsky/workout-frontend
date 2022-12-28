@@ -1,5 +1,5 @@
-import { DataBank } from "./data-bank";
-import INITIAL_DATA_BANK from "./data-bank.json";
+import { DataBank } from "./dataBank";
+import INITIAL_DATA_BANK from "./dataBank.json";
 
 const delayTime = 500;
 let DATA_BANK: DataBank = INITIAL_DATA_BANK;
