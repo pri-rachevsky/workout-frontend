@@ -1,9 +1,9 @@
 module.exports = {
-  "transform": {
+  transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
-  "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
-  "moduleFileExtensions": [
+  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  moduleFileExtensions: [
     "ts",
     "tsx",
     "js",
@@ -11,7 +11,10 @@ module.exports = {
     "json",
     "node"
   ],
-  "setupFilesAfterEnv": [
+  moduleNameMapper: {
+    '\\.(css|less)$': '<rootDir>/src/test/styleMock.js',
+  },
+  setupFilesAfterEnv: [
     "<rootDir>/src/setupTests.ts"
   ]
 };

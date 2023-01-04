@@ -2,7 +2,13 @@
   "common": {
     "appName": "Workout"
   },
-  "defaultPage": {
-    "title": "Let's Workout from here"
+  "homePage": {
+    "title": "Let's Workout from here",
+    "tab": {
+      "home": "Home",
+      "aboutUs": "About us",
+      "workoutMethod": "Workout method",
+      "joinUs": "Join us"
+    }
   }
 }

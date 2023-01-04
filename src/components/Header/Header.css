@@ -1,0 +1,25 @@
+.logoImage {
+  margin-top: 23px;
+}
+
+img {
+  cursor: pointer;
+}
+
+.toolbarWrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: 100%;
+}
+
+.logoAndTabsWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.tabs {
+  margin-top: 20px;
+}

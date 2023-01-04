@@ -2,7 +2,13 @@
   "common": {
     "appName": "Workout"
   },
-  "defaultPage": {
-    "title": "Vamos treinar por aqui"
+  "homePage": {
+    "title": "Vamos treinar por aqui",
+    "tab": {
+      "home": "Início",
+      "aboutUs": "Sobre nós",
+      "workoutMethod": "Método de treinamento",
+      "joinUs": "Junte-se a nós"
+    }
   }
 }
