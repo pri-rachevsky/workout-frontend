@@ -28,18 +28,12 @@ function NoUserLoggedHeader({ tabSelected }: Omit<HeaderProps, "mode">) {
     navigate(`/${tab}`);
   };
   return (
-    <AppBar position="static">
-      <Toolbar>
-        <div className="toolbarWrapper">
-          <div className="logoAndTabsWrapper">
-            <img
-              className="logoImage"
-              height={100}
-              src="logo.png"
-              alt="Workout logo"
-              onClick={() => onTabSelected(undefined, "")}
-            />
-            <div className="tabs">
+    <div className="header">
+      <AppBar position="static">
+        <Toolbar>
+          <div className="toolbarWrapper">
+            <div className="logoAndTabsWrapper">
+              <img height={100} src="logo.png" alt="Workout logo" onClick={() => onTabSelected(undefined, "")} />
               <Tabs value={tabSelected} onChange={onTabSelected}>
                 <Tab label={resources["homePage.tab.home"]} value={NoUserLoggedPage.home} />
                 <Tab label={resources["homePage.tab.aboutUs"]} value={NoUserLoggedPage.aboutUs} />
@@ -47,10 +41,10 @@ function NoUserLoggedHeader({ tabSelected }: Omit<HeaderProps, "mode">) {
                 <Tab label={resources["homePage.tab.joinUs"]} value={NoUserLoggedPage.joinUs} />
               </Tabs>
             </div>
+            <LanguageToggle />
           </div>
-          <LanguageToggle />
-        </div>
-      </Toolbar>
-    </AppBar>
+        </Toolbar>
+      </AppBar>
+    </div>
   );
 }

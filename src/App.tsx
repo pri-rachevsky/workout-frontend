@@ -38,7 +38,7 @@ const theme = createTheme({
 export default function App() {
   const i18n = initI18n();
   return (
-    <div className="container">
+    <div>
       <ThemeProvider theme={theme}>
         <I18nextProvider i18n={i18n}>
           <RouterProvider router={router} />

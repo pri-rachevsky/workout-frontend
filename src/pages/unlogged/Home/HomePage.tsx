@@ -1,6 +1,5 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
-import LanguageToggle from "../../../components/LanguageToggle/LanguageToggle";
 import { useI18n } from "../../../hooks/useI18n";
 import { LoginState, NoUserLoggedPage } from "../../../models/systemMode";
 import "./HomePage.css";

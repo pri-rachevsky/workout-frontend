@@ -1,5 +1,5 @@
-.logoImage {
-  margin-top: 23px;
+.header {
+  margin-bottom: -20px;
 }
 
 img {
@@ -18,8 +18,4 @@ img {
 .logoAndTabsWrapper {
   display: flex;
   align-items: center;
-}
-
-.tabs {
-  margin-top: 20px;
 }
