@@ -8,5 +8,6 @@ export enum NoUserLoggedPage {
   home = "home",
   aboutUs = "about-us",
   workoutMethod = "workout-method",
-  joinUs = "join-us"
+  joinUs = "join-us",
+  login = "login"
 }

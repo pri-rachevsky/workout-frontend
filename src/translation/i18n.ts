@@ -21,11 +21,11 @@ export const initI18n = () => {
   return i18n;
 };
 
-export const transformInOneLevelObject = (obj: any) => {
+export const transformInOneLevelObject = (obj: unknown) => {
   return transformInOneLevelObjectRecursive("", obj);
 };
 
-const transformInOneLevelObjectRecursive = (currentKey: string, deepObj: any) => {
+const transformInOneLevelObjectRecursive = (currentKey: string, deepObj: unknown) => {
   let oneLevelObj = {};
   Object.entries(deepObj).forEach(([key, value]) => {
     const finalKey = currentKey ? `${currentKey}.${key}` : key;

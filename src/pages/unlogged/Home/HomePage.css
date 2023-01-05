@@ -6,3 +6,47 @@
   background-size: cover;
   min-height: 665px;
 }
+
+.image {
+  padding-top: 100px;
+  margin-left: -115px;
+  transform: scaleX(-1);
+  margin-left: 10%;
+  min-height: 500px;
+  width: 30% - 230px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+}
+
+.texts {
+  padding-top: 50px;
+  padding-left: 10%;
+  width: 30%;
+}
+
+.title {
+  text-align: center;
+  font-size: 50px;
+}
+
+.subtitle {
+  padding-top: 20px;
+  text-align: center;
+  font-size: 30px;
+}
+
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  color: black;
+}
+
+.buttons button {
+  color: black;
+  border-color: black;
+}

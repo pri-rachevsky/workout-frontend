@@ -14,6 +14,12 @@ const router = createBrowserRouter([
 ]);
 
 const theme = createTheme({
+  typography: {
+    fontFamily: "Alegreya Sans",
+    fontWeightLight: 500,
+    fontWeightRegular: 600,
+    fontWeightMedium: 700
+  },
   palette: {
     mode: "light",
     primary: {

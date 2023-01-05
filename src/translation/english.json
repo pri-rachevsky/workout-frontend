@@ -2,13 +2,16 @@
   "common": {
     "appName": "Workout"
   },
-  "homePage": {
-    "title": "Let's Workout from here",
+  "unlogged": {
     "tab": {
       "home": "Home",
       "aboutUs": "About us",
       "workoutMethod": "Workout method",
-      "joinUs": "Join us"
+      "joinUs": "Join us",
+      "login":  "Login"
+    },
+    "homePage": {
+      "title": "What about you working out without the need to go to the gym?"
     }
   }
 }

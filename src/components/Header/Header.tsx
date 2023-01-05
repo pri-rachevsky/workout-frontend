@@ -17,34 +17,44 @@ export default function Header({ mode, ...props }: HeaderProps) {
 
 function NoUserLoggedHeader({ tabSelected }: Omit<HeaderProps, "mode">) {
   const navigate = useNavigate();
-  const resources = useI18n([
-    "homePage.tab.home",
-    "homePage.tab.aboutUs",
-    "homePage.tab.joinUs",
-    "homePage.tab.workoutMethod"
-  ]);
+  const { translate } = useI18n(resources);
 
   const onTabSelected = (_, tab: NoUserLoggedPage | "") => {
     navigate(`/${tab}`);
   };
   return (
-    <div className="header">
-      <AppBar position="static">
-        <Toolbar>
-          <div className="toolbarWrapper">
-            <div className="logoAndTabsWrapper">
-              <img height={100} src="logo.png" alt="Workout logo" onClick={() => onTabSelected(undefined, "")} />
-              <Tabs value={tabSelected} onChange={onTabSelected}>
-                <Tab label={resources["homePage.tab.home"]} value={NoUserLoggedPage.home} />
-                <Tab label={resources["homePage.tab.aboutUs"]} value={NoUserLoggedPage.aboutUs} />
-                <Tab label={resources["homePage.tab.workoutMethod"]} value={NoUserLoggedPage.workoutMethod} />
-                <Tab label={resources["homePage.tab.joinUs"]} value={NoUserLoggedPage.joinUs} />
-              </Tabs>
-            </div>
-            <LanguageToggle />
+    <AppBar position="static">
+      <Toolbar>
+        <div className="toolbarWrapper">
+          <div className="logoAndTabsWrapper">
+            <img height={100} src="logo.png" alt="Workout logo" onClick={() => onTabSelected(undefined, "")} />
+            <Tabs value={tabSelected} onChange={onTabSelected}>
+              <Tab label={translate(ResourcesKey.home)} value={""} />
+              <Tab label={translate(ResourcesKey.aboutUs)} value={NoUserLoggedPage.aboutUs} />
+              <Tab label={translate(ResourcesKey.workoutMethod)} value={NoUserLoggedPage.workoutMethod} />
+              <Tab label={translate(ResourcesKey.joinUs)} value={NoUserLoggedPage.joinUs} />
+              <Tab label={translate(ResourcesKey.login)} value={NoUserLoggedPage.login} />
+            </Tabs>
           </div>
-        </Toolbar>
-      </AppBar>
-    </div>
+          <LanguageToggle />
+        </div>
+      </Toolbar>
+    </AppBar>
   );
 }
+
+enum ResourcesKey {
+  home = "home",
+  workoutMethod = "workoutMethod",
+  joinUs = "joinUs",
+  aboutUs = "aboutUs",
+  login = "login"
+}
+
+const resources = {
+  [ResourcesKey.home]: "unlogged.tab.home",
+  [ResourcesKey.aboutUs]: "unlogged.tab.aboutUs",
+  [ResourcesKey.joinUs]: "unlogged.tab.joinUs",
+  [ResourcesKey.workoutMethod]: "unlogged.tab.workoutMethod",
+  [ResourcesKey.login]: "unlogged.tab.login"
+};

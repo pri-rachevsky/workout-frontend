@@ -2,13 +2,17 @@
   "common": {
     "appName": "Workout"
   },
-  "homePage": {
-    "title": "Vamos treinar por aqui",
+  "unlogged": {
     "tab": {
       "home": "Início",
       "aboutUs": "Sobre nós",
       "workoutMethod": "Método de treinamento",
-      "joinUs": "Junte-se a nós"
+      "joinUs": "Junte-se a nós",
+      "login":  "Login"
+    },
+    "homePage": {
+      "title": "Já pensou em não precisar ir até uma academia para treinar?",
+      "subtitle": "Com 30 minutos de exercícios intensos por dia você pode conquistar a saúde e o corpo que tanto almeja. E o melhor de tudo, SEM SAIR DE CASA."
     }
   }
 }

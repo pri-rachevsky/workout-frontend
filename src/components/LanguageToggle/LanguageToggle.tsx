@@ -15,7 +15,7 @@ export default function LanguageToggle() {
   return <MaterialUISwitch sx={{ m: 1 }} value={selectedToggle} onChange={changeLanguage} />;
 }
 
-const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+const MaterialUISwitch = styled(Switch)(() => ({
   width: 62,
   height: 34,
   padding: 7,
@@ -28,6 +28,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
       transform: "translateX(22px)",
       "& .MuiSwitch-thumb:before": {
         margin: 6,
+        // eslint-disable-next-line quotes
         content: '"PT"'
       },
       "& + .MuiSwitch-track": {
@@ -41,6 +42,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
     width: 32,
     height: 32,
     "&:before": {
+      // eslint-disable-next-line quotes
       content: '"EN"',
       margin: 6,
       position: "absolute",

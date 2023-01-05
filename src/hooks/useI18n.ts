@@ -1,10 +1,18 @@
 import { useTranslation } from "react-i18next";
 
-export const useI18n = (keys: string[]): { [key: string]: string } => {
-  const { t: translate } = useTranslation();
-  const finalResources = keys.reduce((resources, key) => {
-    resources[key] = translate(key);
+export const useI18n = (resourcesKeys: { [key: string]: string }): { translate: (resourceKey: string) => string } => {
+  const { t } = useTranslation();
+  const translatedMap = Object.entries(resourcesKeys).reduce((resources, [translateKey, resourcesKey]) => {
+    const i18nextTranslatedValue = t(resourcesKey);
+    const translated =
+      i18nextTranslatedValue === resourcesKey
+        ? `__${resourcesKey} PATH IS NOT TRANSLATED ON THIS LANGUAGE__`
+        : i18nextTranslatedValue;
+    resources[translateKey] = translated;
     return resources;
   }, {});
-  return finalResources;
+
+  const translate = (key: string) => translatedMap[key] || `__${key} KEY WAS NOT PROVIDED TO BE TRANSLATED__`;
+
+  return { translate };
 };
