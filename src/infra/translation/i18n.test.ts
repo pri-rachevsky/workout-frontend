@@ -1,6 +1,6 @@
 import { initI18n, transformInOneLevelObject } from "./i18n";
 import i18n from "i18next";
-import { SupportedLanguages } from "../models/language";
+import { SupportedLanguages } from "../../models/language";
 
 jest.mock("i18next");
 jest.mock("./english.json", () => ({
@@ -36,8 +36,7 @@ describe("i18n", () => {
           }
         }
       },
-      lng: SupportedLanguages.EN,
-      fallbackLng: SupportedLanguages.EN
+      lng: SupportedLanguages.EN
     });
   });
   test("transformInOneLevelObject", () => {

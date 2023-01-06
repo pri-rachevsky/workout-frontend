@@ -1,7 +1,7 @@
-import { StatusCode } from "../../models/HttpClient";
+import { HttpStatusCode } from "../../models/httpClient";
 
-export type FailedResponse = { statusCode: StatusCode; body: { error: string } };
-export type SuccessfulResponse<T> = { statusCode: StatusCode; body?: T | T[] };
-export type SuccessfulGetResponse<T> = { statusCode: StatusCode; body: T | T[] };
-export type SuccessfulDeleteResponse = { statusCode: StatusCode };
-export type SuccessfulCreateAndUpdateResponse<T> = { statusCode: StatusCode; body: T | T[] };
+export type FailedResponse = { statusCode: HttpStatusCode; body: { error: string } };
+export type SuccessfulResponse<T> = { statusCode: HttpStatusCode; body?: T | T[] };
+export type SuccessfulGetResponse<T> = { statusCode: HttpStatusCode; body?: T | T[] };
+export type SuccessfulDeleteResponse = { statusCode: HttpStatusCode };
+export type SuccessfulCreateAndUpdateResponse<T> = { statusCode: HttpStatusCode; body: T | T[] };

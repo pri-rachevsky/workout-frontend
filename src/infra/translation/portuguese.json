@@ -1,6 +1,7 @@
 {
   "common": {
-    "appName": "Workout"
+    "appName": "Workout",
+    "unexpectedErrorMessage": "Algo deu errado, por favor, tente novamente depois."
   },
   "unlogged": {
     "tab": {
@@ -13,6 +14,15 @@
     "homePage": {
       "title": "Já pensou em não precisar ir até uma academia para treinar?",
       "subtitle": "Com 30 minutos de exercícios intensos por dia você pode conquistar a saúde e o corpo que tanto almeja. E o melhor de tudo, SEM SAIR DE CASA."
+    },
+    "loginPage": {
+      "title": "Faça o login",
+      "username": "Usuário",
+      "password": "Senha",
+      "signIn": "Entrar",
+      "doNotHaveAccount": "É novo no Workout?",
+      "createAccount": "Crie sua conta.",
+      "signInErrorMessage": "Usuário ou senha incorretos."
     }
   }
 }

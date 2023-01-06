@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import { initI18n } from "./translation/i18n";
+import { initI18n } from "./infra/translation/i18n";
 import App from "./App";
 
 jest.mock("./pages/unlogged/Home/HomePage", () => () => <>Home Page Content</>);
-jest.mock("./translation/i18n");
+jest.mock("./infra/translation/i18n");
 
 describe("App", () => {
   afterEach(() => {

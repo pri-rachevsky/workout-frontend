@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import HomePage from "./HomePage";
 import { useI18n } from "../../../hooks/useI18n";
-import { useI18nMock } from "../../../test/useI18nMock";
+import { useI18nMock } from "../../../infra/test/useI18nMock";
 import { act } from "react-dom/test-utils";
 import { useNavigate } from "react-router-dom";
 

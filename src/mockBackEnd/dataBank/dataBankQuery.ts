@@ -31,7 +31,7 @@ export function deleteDbQuery<T>(table: string, idPropertyName: keyof T, idValue
   });
 }
 
-function makeAsyncAndDelay<R>(table: string, callback: () => {}): Promise<R> {
+function makeAsyncAndDelay<R>(table: string, callback: () => R): Promise<R> {
   initializeDataBank();
   return new Promise((resolve, reject) => {
     setTimeout(() => {

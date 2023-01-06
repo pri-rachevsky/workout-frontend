@@ -1,4 +1,4 @@
-import { StatusCode } from "../../models/HttpClient";
+import { HttpStatusCode } from "../../models/httpClient";
 import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../dataBank/dataBankQuery";
 import {
   SuccessfulCreateAndUpdateResponse,
@@ -11,19 +11,19 @@ import {
 export class BackEndApi {
   public static async post<T>(
     url: string,
-    params: {},
+    params: object,
     entity: T
   ): Promise<SuccessfulCreateAndUpdateResponse<T> | FailedResponse> {
-    const { error, table } = this.validateUrlAndParams(url, ["create"], params, []);
+    const { error, table } = this.validateUrlAndParams(url, ["create", "login"], params, []);
     if (error) return error;
 
     try {
       const response = await createDbQuery<T>(table, entity);
       return response === "ok"
-        ? (this.createSuccessResponse<T>(StatusCode.created, entity) as SuccessfulCreateAndUpdateResponse<T>)
-        : this.createFailResponse(StatusCode.serverError, "unexpected");
+        ? (this.createSuccessResponse<T>(HttpStatusCode.created, entity) as SuccessfulCreateAndUpdateResponse<T>)
+        : this.createFailResponse(HttpStatusCode.serverError, "unexpected");
     } catch (error) {
-      return this.createFailResponse(StatusCode.serverError, error as string);
+      return this.createFailResponse(HttpStatusCode.serverError, error as string);
     }
   }
 
@@ -39,34 +39,40 @@ export class BackEndApi {
       const { keyName } = params;
       const response = await updateDbQuery<T>(table, keyName, entity);
       return response === "ok"
-        ? (this.createSuccessResponse<T>(StatusCode.ok, entity) as SuccessfulCreateAndUpdateResponse<T>)
-        : this.createFailResponse(StatusCode.serverError, "unexpected");
+        ? (this.createSuccessResponse<T>(HttpStatusCode.ok, entity) as SuccessfulCreateAndUpdateResponse<T>)
+        : this.createFailResponse(HttpStatusCode.serverError, "unexpected");
     } catch (error) {
-      return this.createFailResponse(StatusCode.serverError, error as string);
+      return this.createFailResponse(HttpStatusCode.serverError, error as string);
     }
   }
 
   public static async get<T>(
     url: string,
-    params: { keyName: keyof T; keyValue: T[keyof T] }
+    params?: { keyNames: Array<keyof T>; keyValues: Array<T[keyof T]> }
   ): Promise<SuccessfulGetResponse<T> | FailedResponse> {
-    const { error, table, action } = this.validateUrlAndParams(url, ["read", "readAll"], params, [
-      "keyName",
-      "keyValue"
-    ]);
+    let validationValue;
+    if (url.includes("readAll")) {
+      validationValue = this.validateUrl(url, ["readAll"]);
+    } else {
+      validationValue = this.validateUrlAndParams(url, ["read"], params, ["keyNames", "keyValues"]);
+    }
+    const { error, table, action } = validationValue;
+
     if (error) return error;
 
     try {
-      const { keyName, keyValue } = params;
       const response = await readDbQuery<T>(table);
       if (action === "read") {
-        const entity = response.find((entity) => entity[keyName] === keyValue);
-        if (entity) return this.createSuccessResponse<T>(StatusCode.ok, entity) as SuccessfulGetResponse<T>;
-        return { statusCode: StatusCode.serverError, body: { error: `` } };
+        const { keyNames, keyValues } = params;
+        const entity = response.find((entity) => {
+          const hasAllConditions = keyNames.every((keyName, index) => entity[keyName] === keyValues[index]);
+          return hasAllConditions;
+        });
+        return this.createSuccessResponse<T>(HttpStatusCode.ok, entity) as SuccessfulGetResponse<T>;
       }
-      return { statusCode: StatusCode.ok, body: response };
+      return { statusCode: HttpStatusCode.ok, body: response };
     } catch (error) {
-      return this.createFailResponse(StatusCode.serverError, error as string);
+      return this.createFailResponse(HttpStatusCode.serverError, error as string);
     }
   }
 
@@ -82,16 +88,16 @@ export class BackEndApi {
       const response = await deleteDbQuery<T>(table, keyName, keyValue);
       return response === "ok"
         ? this.createSuccessResponse<T>()
-        : this.createFailResponse(StatusCode.serverError, "unexpected");
+        : this.createFailResponse(HttpStatusCode.serverError, "unexpected");
     } catch (error) {
-      return this.createFailResponse(StatusCode.serverError, error as string);
+      return this.createFailResponse(HttpStatusCode.serverError, error as string);
     }
   }
 
   private static validateUrlAndParams(
     url: string,
     recognizedActions: string[],
-    params: any,
+    params: object,
     requiredProperties: string[]
   ): { error?: FailedResponse; table: string; action: string } {
     const { urlError, table, action } = this.validateUrl(url, recognizedActions);
@@ -107,6 +113,7 @@ export class BackEndApi {
     url: string,
     recognizedActions: string[]
   ): { urlError: null | FailedResponse; table: string; action: string } {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_, table, action] = url.split("/");
     let errorMessage = "";
     if (!table || table === "" || !action || action === "") {
@@ -114,22 +121,26 @@ export class BackEndApi {
     } else if (!recognizedActions.includes(action)) {
       errorMessage = "url action not recognized";
     }
-    const urlError = errorMessage ? this.createFailResponse(StatusCode.badRequest, errorMessage) : null;
+    const urlError = errorMessage ? this.createFailResponse(HttpStatusCode.badRequest, errorMessage) : null;
     return { urlError, table, action };
   }
 
-  private static validateParams(params: any, requiredProperties: string[], actions: string[]): null | FailedResponse {
+  private static validateParams(
+    params: object,
+    requiredProperties: string[],
+    actions: string[]
+  ): null | FailedResponse {
     const missingProperty = requiredProperties.find((property) => params[property] === undefined);
     return missingProperty
-      ? this.createFailResponse(StatusCode.badRequest, `${missingProperty} param is required for ${actions} action`)
+      ? this.createFailResponse(HttpStatusCode.badRequest, `${missingProperty} param is required for ${actions} action`)
       : null;
   }
 
-  private static createSuccessResponse<T>(statusCode?: StatusCode, data?: T | T[]): SuccessfulResponse<T> {
-    return data && statusCode ? { statusCode, body: data } : { statusCode: StatusCode.noContent };
+  private static createSuccessResponse<T>(statusCode?: HttpStatusCode, data?: T | T[]): SuccessfulResponse<T> {
+    return data && statusCode ? { statusCode, body: data } : { statusCode: HttpStatusCode.noContent };
   }
 
-  private static createFailResponse(statusCode: StatusCode, error: string): FailedResponse {
+  private static createFailResponse(statusCode: HttpStatusCode, error: string): FailedResponse {
     return { statusCode, body: { error } };
   }
 }

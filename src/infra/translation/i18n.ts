@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import { initialLanguage, SupportedLanguages } from "../models/language";
+import { initialLanguage, SupportedLanguages } from "../../models/language";
 import PortugueseTranslation from "./portuguese.json";
 import EnglishTranslation from "./english.json";
 
@@ -14,8 +14,7 @@ export const initI18n = () => {
         translation: transformInOneLevelObject(PortugueseTranslation)
       }
     },
-    lng: initialLanguage,
-    fallbackLng: initialLanguage
+    lng: initialLanguage
   });
 
   return i18n;

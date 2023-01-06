@@ -1,6 +1,7 @@
 {
   "common": {
-    "appName": "Workout"
+    "appName": "Workout",
+    "unexpectedErrorMessage": "Something went wrong, please, try again later."
   },
   "unlogged": {
     "tab": {
@@ -8,11 +9,20 @@
       "aboutUs": "About us",
       "workoutMethod": "Workout method",
       "joinUs": "Join us",
-      "login":  "Login"
+      "login": "Login"
     },
     "homePage": {
       "title": "What about you working out without the need to go to the gym?",
       "subtitle": "With 30 minutes of intense exercise a day you can achieve the health and body shape you want so much. And best of all, WITHOUT LEAVING HOME."
+    },
+    "loginPage": {
+      "title": "Sign in to Workout",
+      "username": "Username",
+      "password": "Password",
+      "signIn": "Sign in",
+      "doNotHaveAccount": "New to Workout?",
+      "createAccount": "Create an account.",
+      "signInErrorMessage": "Incorrect username or password."
     }
   }
 }

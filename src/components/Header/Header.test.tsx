@@ -2,7 +2,7 @@ import React from "react";
 import { act, render, screen } from "@testing-library/react";
 import Header from "./Header";
 import { LoginState, NoUserLoggedPage } from "../../models/systemMode";
-import { useI18nMock } from "../../test/useI18nMock";
+import { useI18nMock } from "../../infra/test/useI18nMock";
 import { useI18n } from "../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
 

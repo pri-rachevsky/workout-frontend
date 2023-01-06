@@ -2,14 +2,20 @@ import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/unlogged/Home/HomePage";
-import { initI18n } from "./translation/i18n";
+import { initI18n } from "./infra/translation/i18n";
 import { I18nextProvider } from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material";
+import { NoUserLoggedPage } from "./models/systemMode";
+import { LoginPage } from "./pages/unlogged/Login/LoginPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <HomePage />
+  },
+  {
+    path: `/${NoUserLoggedPage.login}`,
+    element: <LoginPage />
   }
 ]);
 

@@ -1,0 +1,40 @@
+.container {
+  background: url('LoginPageBackground.jpg'); 
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  max-width: 100vw;
+  /* height: calc(100vh - 100px); */
+}
+
+.pageContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+
+}
+
+.forms {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px
+}
+
+.input div {
+  margin-bottom: 20px;
+  width: 300px;
+}
+
+.button {
+  width: 90px;
+}
+
+.newAccountCard {
+  width: 300px;
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
