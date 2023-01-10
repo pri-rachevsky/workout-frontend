@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Alert, Button, Card, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
@@ -7,14 +7,19 @@ import Header from "../../../components/Header/Header";
 import "./LoginPage.css";
 import { useI18n } from "../../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
-import { User } from "../../../models/user";
-import { NoUserLoggedPage } from "../../../models/systemMode";
+import { Role, User } from "../../../models/user";
+import {
+  LoginState,
+  NoUserLoggedPage,
+  PersonalTrainerDefaultPage,
+  StudentDefaultPage
+} from "../../../models/systemMode";
+import { LoggedContext } from "../../../contexts/logged.context";
 
-type LoginPageProps = { onLogin: (user: User) => void };
-
-export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+export const LoginPage: React.FC = () => {
   const { translate } = useI18n(resources);
   const navigate = useNavigate();
+  const { setLogged } = useContext(LoggedContext);
   const { register, getValues, formState } = useForm();
   const [error, setError] = useState<{ hasError: boolean; message?: ResourcesKey }>({
     hasError: false
@@ -31,8 +36,25 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
       if (!user) {
         setError({ hasError: true, message: ResourcesKey.signInErrorMessage });
       } else {
-        onLogin(user);
-        navigate("/");
+        const roleMap = new Map([
+          [
+            Role.PersonalTrainer,
+            {
+              state: LoginState.personalTrainerLogged,
+              path: PersonalTrainerDefaultPage
+            }
+          ],
+          [
+            Role.Student,
+            {
+              state: LoginState.studentLogged,
+              path: StudentDefaultPage
+            }
+          ]
+        ]);
+        const { state, path } = roleMap.get(user.role);
+        setLogged({ state, user });
+        navigate(`/${path}`);
       }
     } catch (error) {
       setError({ hasError: true, message: ResourcesKey.unexpectedErrorMessage });

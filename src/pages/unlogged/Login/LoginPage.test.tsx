@@ -6,12 +6,25 @@ import { useNavigate } from "react-router-dom";
 import { useI18nMock } from "../../../infra/test/useI18nMock";
 import userEvent from "@testing-library/user-event";
 import { UserService } from "../../../service/user.service";
-import { studentMock } from "../../../infra/test/userMock";
+import { personalTrainerMock, studentMock } from "../../../infra/test/userMock";
+import { LoggedContext } from "../../../contexts/logged.context";
+import { LoginState } from "../../../models/systemMode";
 
 jest.mock("../../../components/Header/Header", () => () => <p>Header</p>);
 jest.mock("react-router-dom");
 jest.mock("../../../hooks/useI18n");
 jest.mock("../../../service/user.service");
+
+const sut = () => {
+  const setLoggedMock = jest.fn();
+  const LoginPageMock = () => (
+    <LoggedContext.Provider value={{ logged: { state: LoginState.noUserLogged }, setLogged: setLoggedMock }}>
+      <LoginPage />
+    </LoggedContext.Provider>
+  );
+
+  return { LoginPageMock, setLoggedMock };
+};
 
 describe("LoginPage", () => {
   const navigateMock = jest.fn();
@@ -33,7 +46,8 @@ describe("LoginPage", () => {
     return { createAccountButton, signInButton, usernameInput, passwordInput };
   };
   it("should render header, forms and button", () => {
-    render(<LoginPage onLogin={() => {}} />);
+    const { LoginPageMock } = sut();
+    render(<LoginPageMock />);
 
     expect(screen.getByText(/header/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
@@ -44,7 +58,8 @@ describe("LoginPage", () => {
   });
 
   it("should navigate when click on createAccount button", async () => {
-    render(<LoginPage onLogin={() => {}} />);
+    const { LoginPageMock } = sut();
+    render(<LoginPageMock />);
 
     const { createAccountButton } = getElements();
     await act(() => createAccountButton.click());
@@ -52,10 +67,10 @@ describe("LoginPage", () => {
     expect(navigateMock).toHaveBeenCalledWith("/join-us");
   });
 
-  it("should call login service when click on sign in button", async () => {
+  it("should call login service when click on sign in button with right logged data when it is student", async () => {
     loginServiceMock.mockResolvedValue(studentMock);
-    const loginAppMock = jest.fn().mockResolvedValue(studentMock);
-    render(<LoginPage onLogin={loginAppMock} />);
+    const { LoginPageMock, setLoggedMock } = sut();
+    render(<LoginPageMock />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
     expect(signInButton).toBeDisabled();
@@ -70,14 +85,38 @@ describe("LoginPage", () => {
     await act(async () => await signInButton.click());
 
     expect(loginServiceMock).toHaveBeenCalledWith("pri", "1234");
-    expect(loginAppMock).toHaveBeenCalledWith(studentMock);
+    expect(setLoggedMock).toHaveBeenCalledWith({ user: studentMock, state: LoginState.studentLogged });
+    expect(navigateMock).toHaveBeenCalledWith("/");
+    expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
+  });
+  it("should call login service when click on sign in button with right logged data when it is personal trainer", async () => {
+    loginServiceMock.mockResolvedValue(personalTrainerMock);
+    const { LoginPageMock, setLoggedMock } = sut();
+    render(<LoginPageMock />);
+
+    const { signInButton, usernameInput, passwordInput } = getElements();
+    expect(signInButton).toBeDisabled();
+
+    await act(async () => {
+      userEvent.type(usernameInput, "tay");
+      userEvent.type(passwordInput, "5678");
+      passwordInput.blur();
+    });
+    expect(signInButton).toBeEnabled();
+
+    await act(async () => await signInButton.click());
+
+    expect(loginServiceMock).toHaveBeenCalledWith("tay", "5678");
+    expect(setLoggedMock).toHaveBeenCalledWith({ user: personalTrainerMock, state: LoginState.personalTrainerLogged });
     expect(navigateMock).toHaveBeenCalledWith("/");
     expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
   });
   it("should show error alert when sign in does not recognize user", async () => {
     loginServiceMock.mockResolvedValue(null);
-    render(<LoginPage onLogin={() => {}} />);
+    const { LoginPageMock } = sut();
+    render(<LoginPageMock />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
 
@@ -94,7 +133,8 @@ describe("LoginPage", () => {
   });
   it("should show error alert when sign in fails", async () => {
     loginServiceMock.mockRejectedValue("something is really wrong");
-    render(<LoginPage onLogin={() => {}} />);
+    const { LoginPageMock } = sut();
+    render(<LoginPageMock />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
 

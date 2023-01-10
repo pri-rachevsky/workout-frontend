@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppBar, Toolbar } from "@mui/material";
+import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoginState, NoUserLoggedPage, Page } from "../../models/systemMode";
 import "./Header.css";
@@ -17,7 +17,10 @@ export type HeaderProps = {
 
 export default function Header(props: HeaderProps) {
   const navigate = useNavigate();
-  const { state } = useContext(LoggedContext);
+  const {
+    logged: { state },
+    setLogged
+  } = useContext(LoggedContext);
 
   const onTabSelected = (tab: NoUserLoggedPage) => {
     navigate(`/${tab}`);
@@ -33,12 +36,23 @@ export default function Header(props: HeaderProps) {
     [LoginState.studentLogged]: <StudentLoggedHeaderContent {...headerContentProps} />
   };
 
+  const onLogoutClicked = () => {
+    setLogged({ state: LoginState.noUserLogged });
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
         <div className="toolbarWrapper">
           <div className="logoAndTabsWrapper">{loginStateHeaderContentMap[state]}</div>
-          <LanguageToggle />
+          <div>
+            {state !== LoginState.noUserLogged && (
+              <IconButton data-testid="logoutButton" onClick={onLogoutClicked}>
+                <Icon>logout</Icon>
+              </IconButton>
+            )}
+            <LanguageToggle />
+          </div>
         </div>
       </Toolbar>
     </AppBar>

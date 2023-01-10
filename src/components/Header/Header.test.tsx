@@ -23,13 +23,14 @@ type SutParams = {
 };
 
 const sut = ({ loginState, tabSelected }: SutParams) => {
+  const setLoggedMock = jest.fn();
   const HeaderMock = () => (
-    <LoggedContext.Provider value={{ state: loginState }}>
+    <LoggedContext.Provider value={{ logged: { state: loginState }, setLogged: setLoggedMock }}>
       <Header tabSelected={tabSelected} />
     </LoggedContext.Provider>
   );
 
-  return { HeaderMock };
+  return { HeaderMock, setLoggedMock };
 };
 
 describe("Header", () => {
@@ -51,6 +52,7 @@ describe("Header", () => {
       expect(screen.getByText(/workoutMethod/i)).toBeInTheDocument();
       expect(screen.getByText(/joinUs/i)).toBeInTheDocument();
       expect(screen.getByText(/login/i)).toBeInTheDocument();
+      expect(screen.queryByTestId("logoutButton")).not.toBeInTheDocument();
     });
     describe("should navigate correctly", () => {
       it.each([
@@ -95,6 +97,7 @@ describe("Header", () => {
       expect(screen.getByRole("img", { name: /workout logo/i })).toBeInTheDocument();
       expect(screen.getByText(/myStudents/i)).toBeInTheDocument();
       expect(screen.getByText(/professionalProfile/i)).toBeInTheDocument();
+      expect(screen.getByTestId("logoutButton")).toBeInTheDocument();
     });
     describe("should navigate correctly", () => {
       it.each([["professionalProfile", PersonalTrainerLoggedPage.profile]])(
@@ -145,6 +148,7 @@ describe("Header", () => {
 
       expect(screen.getByRole("img", { name: /workout logo/i })).toBeInTheDocument();
       expect(screen.getByText(/clientProfile/i)).toBeInTheDocument();
+      expect(screen.getByTestId("logoutButton")).toBeInTheDocument();
     });
     describe("should navigate correctly", () => {
       test.skip("when click on profile tab", async () => {
@@ -170,5 +174,16 @@ describe("Header", () => {
         expect(navigateMock).toHaveBeenCalledWith("/");
       });
     });
+  });
+  test("when click on logout button should call setLogged", async () => {
+    const { HeaderMock, setLoggedMock } = sut({
+      loginState: LoginState.studentLogged,
+      tabSelected: StudentLoggedPage.profile
+    });
+    render(<HeaderMock />);
+
+    const lougoutButton = screen.getByTestId("logoutButton");
+    await act(() => lougoutButton.click());
+    expect(setLoggedMock).toHaveBeenCalledWith({ state: LoginState.noUserLogged });
   });
 });
