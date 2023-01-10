@@ -1,60 +1,46 @@
-import React from "react";
-import { AppBar, Tab, Tabs, Toolbar } from "@mui/material";
+import React, { useContext } from "react";
+import { AppBar, Toolbar } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useI18n } from "../../hooks/useI18n";
-import { LoginState, NoUserLoggedPage } from "../../models/systemMode";
+import { LoginState, NoUserLoggedPage, Page } from "../../models/systemMode";
 import "./Header.css";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
+import { LoggedContext } from "../../contexts/logged.context";
+import {
+  NoUserLoggedHeaderContent,
+  PersonalTrainerLoggedHeaderContent,
+  StudentLoggedHeaderContent
+} from "./HeaderContent";
 
-type HeaderProps = {
-  mode: LoginState;
-  tabSelected: NoUserLoggedPage;
+export type HeaderProps = {
+  tabSelected: Page;
 };
 
-export default function Header({ mode, ...props }: HeaderProps) {
-  return <>{mode === LoginState.noUserLogged && <NoUserLoggedHeader {...props} />}</>;
-}
-
-function NoUserLoggedHeader({ tabSelected }: Omit<HeaderProps, "mode">) {
+export default function Header(props: HeaderProps) {
   const navigate = useNavigate();
-  const { translate } = useI18n(resources);
+  const { state } = useContext(LoggedContext);
 
-  const onTabSelected = (_, tab: NoUserLoggedPage | "") => {
+  const onTabSelected = (tab: NoUserLoggedPage) => {
     navigate(`/${tab}`);
   };
+
+  const headerContentProps = {
+    ...props,
+    onTabSelected
+  };
+  const loginStateHeaderContentMap = {
+    [LoginState.noUserLogged]: <NoUserLoggedHeaderContent {...headerContentProps} />,
+    [LoginState.personalTrainerLogged]: <PersonalTrainerLoggedHeaderContent {...headerContentProps} />,
+    [LoginState.studentLogged]: <StudentLoggedHeaderContent {...headerContentProps} />
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
         <div className="toolbarWrapper">
-          <div className="logoAndTabsWrapper">
-            <img height={100} src="logo.png" alt="Workout logo" onClick={() => onTabSelected(undefined, "")} />
-            <Tabs value={tabSelected} onChange={onTabSelected}>
-              <Tab label={translate(ResourcesKey.home)} value={""} />
-              <Tab label={translate(ResourcesKey.aboutUs)} value={NoUserLoggedPage.aboutUs} />
-              <Tab label={translate(ResourcesKey.workoutMethod)} value={NoUserLoggedPage.workoutMethod} />
-              <Tab label={translate(ResourcesKey.joinUs)} value={NoUserLoggedPage.joinUs} />
-              <Tab label={translate(ResourcesKey.login)} value={NoUserLoggedPage.login} />
-            </Tabs>
-          </div>
+          <div className="logoAndTabsWrapper">{loginStateHeaderContentMap[state]}</div>
           <LanguageToggle />
         </div>
       </Toolbar>
     </AppBar>
   );
 }
-
-enum ResourcesKey {
-  home = "home",
-  workoutMethod = "workoutMethod",
-  joinUs = "joinUs",
-  aboutUs = "aboutUs",
-  login = "login"
-}
-
-const resources = {
-  [ResourcesKey.home]: "unlogged.tab.home",
-  [ResourcesKey.aboutUs]: "unlogged.tab.aboutUs",
-  [ResourcesKey.joinUs]: "unlogged.tab.joinUs",
-  [ResourcesKey.workoutMethod]: "unlogged.tab.workoutMethod",
-  [ResourcesKey.login]: "unlogged.tab.login"
-};

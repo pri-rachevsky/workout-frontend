@@ -1,2 +1,18 @@
 {
+  "user": [
+    {
+      "id": "00001",
+      "name": "Tayla",
+      "username": "a",
+      "password": "b",
+      "role": "personal trainer"
+    },
+    {
+      "id": "00002",
+      "name": "Priscila",
+      "username": "a",
+      "password": "a",
+      "role": "student"
+    }
+  ]
 }

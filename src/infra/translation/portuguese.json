@@ -23,6 +23,21 @@
       "doNotHaveAccount": "É novo no Workout?",
       "createAccount": "Crie sua conta.",
       "signInErrorMessage": "Usuário ou senha incorretos."
+    },
+    "joinUsPage": {
+      "title": "TODO: Join Us"
+    },
+    "aboutUsPage": {
+      "title": "TODO: About Us"
+    },
+    "workoutMethodPage": {
+      "title": "TODO: Workout Method"
+    }
+  },
+  "personalTrainer": {
+    "tab": {
+      "myStudents": "Meus Alunos",
+      "profile": "Perfil"
     }
   }
 }

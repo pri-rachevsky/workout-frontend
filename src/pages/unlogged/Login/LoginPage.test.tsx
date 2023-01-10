@@ -15,11 +15,11 @@ jest.mock("../../../service/user.service");
 
 describe("LoginPage", () => {
   const navigateMock = jest.fn();
-  const loginMock = jest.fn();
+  const loginServiceMock = jest.fn();
   beforeEach(() => {
     (useI18n as jest.Mock).mockImplementation(useI18nMock);
     (useNavigate as jest.Mock).mockImplementation(() => navigateMock);
-    (UserService.login as jest.Mock).mockImplementation(loginMock);
+    (UserService.login as jest.Mock).mockImplementation(loginServiceMock);
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -33,7 +33,7 @@ describe("LoginPage", () => {
     return { createAccountButton, signInButton, usernameInput, passwordInput };
   };
   it("should render header, forms and button", () => {
-    render(<LoginPage />);
+    render(<LoginPage onLogin={() => {}} />);
 
     expect(screen.getByText(/header/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
@@ -44,7 +44,7 @@ describe("LoginPage", () => {
   });
 
   it("should navigate when click on createAccount button", async () => {
-    render(<LoginPage />);
+    render(<LoginPage onLogin={() => {}} />);
 
     const { createAccountButton } = getElements();
     await act(() => createAccountButton.click());
@@ -53,8 +53,9 @@ describe("LoginPage", () => {
   });
 
   it("should call login service when click on sign in button", async () => {
-    loginMock.mockResolvedValue(studentMock);
-    render(<LoginPage />);
+    loginServiceMock.mockResolvedValue(studentMock);
+    const loginAppMock = jest.fn().mockResolvedValue(studentMock);
+    render(<LoginPage onLogin={loginAppMock} />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
     expect(signInButton).toBeDisabled();
@@ -68,13 +69,15 @@ describe("LoginPage", () => {
 
     await act(async () => await signInButton.click());
 
-    expect(loginMock).toHaveBeenCalledWith("pri", "1234");
+    expect(loginServiceMock).toHaveBeenCalledWith("pri", "1234");
+    expect(loginAppMock).toHaveBeenCalledWith(studentMock);
+    expect(navigateMock).toHaveBeenCalledWith("/");
     expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
   });
   it("should show error alert when sign in does not recognize user", async () => {
-    loginMock.mockResolvedValue(null);
-    render(<LoginPage />);
+    loginServiceMock.mockResolvedValue(null);
+    render(<LoginPage onLogin={() => {}} />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
 
@@ -85,13 +88,13 @@ describe("LoginPage", () => {
     });
     await act(async () => await signInButton.click());
 
-    expect(loginMock).toHaveBeenCalledWith("pri", "1234");
+    expect(loginServiceMock).toHaveBeenCalledWith("pri", "1234");
     expect(screen.getByText(/signInErrorMessage/i)).toBeInTheDocument();
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
   });
   it("should show error alert when sign in fails", async () => {
-    loginMock.mockRejectedValue("something is really wrong");
-    render(<LoginPage />);
+    loginServiceMock.mockRejectedValue("something is really wrong");
+    render(<LoginPage onLogin={() => {}} />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
 
@@ -102,7 +105,7 @@ describe("LoginPage", () => {
     });
     await act(async () => await signInButton.click());
 
-    expect(loginMock).toHaveBeenCalledWith("pri", "1234");
+    expect(loginServiceMock).toHaveBeenCalledWith("pri", "1234");
     expect(screen.getByText(/unexpectedErrorMessage/i)).toBeInTheDocument();
     expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
   });

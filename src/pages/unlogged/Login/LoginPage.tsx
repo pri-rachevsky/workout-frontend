@@ -4,12 +4,15 @@ import { useForm } from "react-hook-form";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
 import { UserService } from "../../../service/user.service";
 import Header from "../../../components/Header/Header";
-import { LoginState, NoUserLoggedPage } from "../../../models/systemMode";
 import "./LoginPage.css";
 import { useI18n } from "../../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
+import { User } from "../../../models/user";
+import { NoUserLoggedPage } from "../../../models/systemMode";
 
-export const LoginPage: React.FC = () => {
+type LoginPageProps = { onLogin: (user: User) => void };
+
+export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
   const { translate } = useI18n(resources);
   const navigate = useNavigate();
   const { register, getValues, formState } = useForm();
@@ -27,6 +30,9 @@ export const LoginPage: React.FC = () => {
       const user = await UserService.login(username, password);
       if (!user) {
         setError({ hasError: true, message: ResourcesKey.signInErrorMessage });
+      } else {
+        onLogin(user);
+        navigate("/");
       }
     } catch (error) {
       setError({ hasError: true, message: ResourcesKey.unexpectedErrorMessage });
@@ -42,7 +48,7 @@ export const LoginPage: React.FC = () => {
   return (
     <PageLoadingWrapper isLoading={isLoading}>
       <>
-        <Header mode={LoginState.noUserLogged} tabSelected={NoUserLoggedPage.login} />
+        <Header tabSelected={NoUserLoggedPage.login} />
         <div className="container">
           <div className="pageContent">
             <Card className="forms">

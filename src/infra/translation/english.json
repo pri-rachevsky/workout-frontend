@@ -23,6 +23,35 @@
       "doNotHaveAccount": "New to Workout?",
       "createAccount": "Create an account.",
       "signInErrorMessage": "Incorrect username or password."
+    },
+    "joinUsPage": {
+      "title": "TODO: Join Us"
+    },
+    "aboutUsPage": {
+      "title": "TODO: About Us"
+    },
+    "workoutMethodPage": {
+      "title": "TODO: Workout Method"
+    }
+  },
+  "personalTrainer": {
+    "tab": {
+      "myStudents": "My Students",
+      "profile": "Profile"
+    },
+    "studentListPage": {
+      "title": "TODO: My students"
+    },
+    "professionalProfilePage": {
+      "title": "TODO: Personal trainer Profile"
+    }
+  },
+  "student": {
+    "tab": {
+      "profile": "Profile"
+    },
+    "clientProfilePage": {
+      "title": "TODO: Student Profile"
     }
   }
 }

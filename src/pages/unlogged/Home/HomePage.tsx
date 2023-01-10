@@ -1,17 +1,17 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
 import { useI18n } from "../../../hooks/useI18n";
-import { LoginState, NoUserLoggedPage } from "../../../models/systemMode";
+import { NoUserLoggedPage } from "../../../models/systemMode";
 import { Button } from "@mui/material";
 import "./HomePage.css";
 import { useNavigate } from "react-router-dom";
 
-export default function HomePage() {
+export const HomePage: React.FC = () => {
   const { translate } = useI18n(resources);
   const navigate = useNavigate();
   return (
     <>
-      <Header mode={LoginState.noUserLogged} tabSelected={NoUserLoggedPage.home} />
+      <Header tabSelected={NoUserLoggedPage.home} />
       <div className="container">
         <div className="content">
           <div className="texts">
@@ -31,7 +31,7 @@ export default function HomePage() {
       </div>
     </>
   );
-}
+};
 
 enum ResourcesKey {
   title = "title",
