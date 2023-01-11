@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../components/Header/Header";
 import { useI18n } from "../../../hooks/useI18n";
 import { NoUserLoggedPage } from "../../../models/systemMode";
-import "./JoinUs.css";
+import "./JoinUs.scss";
 
 export const JoinUs: React.FC = () => {
   const { translate } = useI18n(resources);

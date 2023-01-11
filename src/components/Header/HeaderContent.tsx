@@ -8,12 +8,12 @@ import {
   PersonalTrainerLoggedPage,
   StudentLoggedPage
 } from "../../models/systemMode";
-import "./Header.css";
+import "./Header.scss";
 import { HeaderProps } from "./Header";
 
 type HeaderLogoProps = { onClick: () => void };
 const HeaderLogo: React.FC<HeaderLogoProps> = ({ onClick }) => (
-  <img height={100} src="logo.png" alt="Workout logo" onClick={onClick} />
+  <img className="header-logo" height={100} src="logo.png" alt="Workout logo" onClick={onClick} />
 );
 
 type HeaderContentProps = HeaderProps & {

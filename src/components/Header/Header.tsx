@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { LoginState, NoUserLoggedPage, Page } from "../../models/systemMode";
-import "./Header.css";
+import "./Header.scss";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import { LoggedContext } from "../../contexts/logged.context";
 import {
@@ -43,8 +43,8 @@ export default function Header(props: HeaderProps) {
   return (
     <AppBar position="static">
       <Toolbar>
-        <div className="toolbarWrapper">
-          <div className="logoAndTabsWrapper">{loginStateHeaderContentMap[state]}</div>
+        <div className="header-toolbarWrapper">
+          <div className="header-logoAndTabsWrapper">{loginStateHeaderContentMap[state]}</div>
           <div>
             {state !== LoginState.noUserLogged && (
               <IconButton data-testid="logoutButton" onClick={onLogoutClicked}>

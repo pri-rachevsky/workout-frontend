@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { ReactElement } from "react";
-import "./PageLoadingWrapper.css";
+import "./PageLoadingWrapper.scss";
 
 type PageLoadingWrapperParams = {
   isLoading: boolean;

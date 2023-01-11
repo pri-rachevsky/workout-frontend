@@ -3,7 +3,7 @@ import Header from "../../../components/Header/Header";
 import { useI18n } from "../../../hooks/useI18n";
 import { NoUserLoggedPage } from "../../../models/systemMode";
 import { Button } from "@mui/material";
-import "./HomePage.css";
+import "./HomePage.scss";
 import { useNavigate } from "react-router-dom";
 
 export const HomePage: React.FC = () => {
@@ -12,12 +12,12 @@ export const HomePage: React.FC = () => {
   return (
     <>
       <Header tabSelected={NoUserLoggedPage.home} />
-      <div className="container">
-        <div className="content">
-          <div className="texts">
-            <h1 className="title">{translate(ResourcesKey.title)}</h1>
-            <h2 className="subtitle">{translate(ResourcesKey.subtitle)}</h2>
-            <div className="buttons">
+      <div className="home-background">
+        <div className="home-content">
+          <div className="home-texts">
+            <h1 className="home-title">{translate(ResourcesKey.title)}</h1>
+            <h2 className="home-subtitle">{translate(ResourcesKey.subtitle)}</h2>
+            <div className="home-buttons">
               <Button variant="outlined" onClick={() => navigate(`/${NoUserLoggedPage.joinUs}`)}>
                 {translate(ResourcesKey.joinUs)}
               </Button>
@@ -26,7 +26,7 @@ export const HomePage: React.FC = () => {
               </Button>
             </div>
           </div>
-          <img className="image" src="homePageIllustration.png" alt="person work outing" />
+          <img className="home-image" src="homePageIllustration.png" alt="person work outing" />
         </div>
       </div>
     </>

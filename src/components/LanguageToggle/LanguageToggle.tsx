@@ -2,7 +2,7 @@ import { styled, Switch } from "@mui/material";
 import React, { useState } from "react";
 import i18n from "i18next";
 import { SupportedLanguages } from "../../models/language";
-import "./LanguageToggle.css";
+import "./LanguageToggle.scss";
 
 export default function LanguageToggle() {
   const [selectedToggle, setSelectedToggle] = useState(false);

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../../components/Header/Header";
 import { useI18n } from "../../../../hooks/useI18n";
 import { StudentLoggedPage } from "../../../../models/systemMode";
-import "./ClientProfilePage.css";
+import "./ClientProfilePage.scss";
 
 export const ClientProfilePage: React.FC = () => {
   const { translate } = useI18n(resources);

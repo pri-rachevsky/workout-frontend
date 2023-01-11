@@ -1,0 +1,19 @@
+.header {
+  &-toolbarWrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+  }
+
+  &-logoAndTabsWrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  &-logo {
+    cursor: pointer;
+  }
+}

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../../../../components/Header/Header";
 import { useI18n } from "../../../../hooks/useI18n";
 import { PersonalTrainerLoggedPage } from "../../../../models/systemMode";
-import "./ProfessionalProfilePage.css";
+import "./ProfessionalProfilePage.scss";
 
 export const ProfessionalProfilePage: React.FC = () => {
   const { translate } = useI18n(resources);

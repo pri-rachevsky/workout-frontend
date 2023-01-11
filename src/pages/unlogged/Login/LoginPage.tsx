@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
 import { UserService } from "../../../service/user.service";
 import Header from "../../../components/Header/Header";
-import "./LoginPage.css";
+import "./LoginPage.scss";
 import { useI18n } from "../../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
-import { Role, User } from "../../../models/user";
+import { Role } from "../../../models/user";
 import {
   LoginState,
   NoUserLoggedPage,
@@ -71,9 +71,9 @@ export const LoginPage: React.FC = () => {
     <PageLoadingWrapper isLoading={isLoading}>
       <>
         <Header tabSelected={NoUserLoggedPage.login} />
-        <div className="container">
-          <div className="pageContent">
-            <Card className="forms">
+        <div className="login-background">
+          <div className="login-content">
+            <Card className="login-forms">
               <h1>{translate(ResourcesKey.title)}</h1>
               {error.hasError && (
                 <Alert severity="error" style={{ marginBottom: "10px", width: "300px" }}>
@@ -83,19 +83,19 @@ export const LoginPage: React.FC = () => {
               <TextField
                 label={translate(ResourcesKey.username)}
                 {...register("username", { required: true })}
-                className="input"
+                className="login-input"
               />
               <TextField
                 type="password"
                 label={translate(ResourcesKey.password)}
                 {...register("password", { required: true })}
-                className="input"
+                className="login-input"
               />
-              <Button disabled={!formState.isValid} variant="contained" onClick={onLoginClick} className="button">
+              <Button disabled={!formState.isValid} variant="contained" onClick={onLoginClick} className="login button">
                 {translate(ResourcesKey.signIn)}
               </Button>
             </Card>
-            <Card className="newAccountCard">
+            <Card className="login-newAccountCard">
               <p>
                 {translate(ResourcesKey.doNotHaveAccount) + " "}
                 <Button style={{ textTransform: "none" }} onClick={onCreateAccountClick}>

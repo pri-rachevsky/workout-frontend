@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import "./App.css";
 import { initI18n } from "./infra/translation/i18n";
 import { I18nextProvider } from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material";
