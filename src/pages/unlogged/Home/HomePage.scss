@@ -1,17 +1,12 @@
+@import "../../../infra/layout/mixins.scss";
+
 .home {
   &-background {
-    background: url("HomePageBackground.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-position: center;
-    background-size: cover;
-    min-height: 665px;
-    max-width: 100vw;
-    height: calc(100vh - 100px);
+    @include backgroundWithImage("HomePageBackground.png");
   }
 
   &-image {
-    padding-top: 100px;
+    padding-top: 50px;
     margin-left: 10vw;
     transform: scaleX(-1);
     min-height: 500px;
@@ -23,7 +18,7 @@
   }
 
   &-texts {
-    padding-top: 50px;
+    padding-top: 25px;
     padding-left: 10vw;
     width: 30vw;
   }
@@ -44,6 +39,7 @@
     flex-direction: row;
     justify-content: space-around;
     color: black;
+    margin-bottom: 30px;
   }
 
   &-buttons button {

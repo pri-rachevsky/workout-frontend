@@ -1,0 +1,8 @@
+@import "../../../infra/layout/mixins.scss";
+
+.joinUs {
+  &-background {
+    @include backgroundWithImage("JoinUsPageBackground.jpg");
+    margin-top: -22px;
+  }
+}

@@ -9,7 +9,9 @@ export const JoinUs: React.FC = () => {
   return (
     <>
       <Header tabSelected={NoUserLoggedPage.joinUs} />
-      <h1>{translate(ResourcesKey.title)}</h1>
+      <div className="joinUs-background">
+        <h1>{translate(ResourcesKey.title)}</h1>
+      </div>
     </>
   );
 };
