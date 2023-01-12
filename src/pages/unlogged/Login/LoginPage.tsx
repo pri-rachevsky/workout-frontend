@@ -76,7 +76,7 @@ export const LoginPage: React.FC = () => {
             <Card className="login-forms">
               <h1>{translate(ResourcesKey.title)}</h1>
               {error.hasError && (
-                <Alert severity="error" style={{ marginBottom: "10px", width: "300px" }}>
+                <Alert severity="error" className="login-errorAlert">
                   {translate(error.message)}
                 </Alert>
               )}
@@ -123,9 +123,9 @@ enum ResourcesKey {
 
 const resources = {
   [ResourcesKey.title]: "unlogged.loginPage.title",
-  [ResourcesKey.username]: "unlogged.loginPage.username",
-  [ResourcesKey.password]: "unlogged.loginPage.password",
-  [ResourcesKey.signIn]: "unlogged.loginPage.signIn",
+  [ResourcesKey.username]: "unlogged.username",
+  [ResourcesKey.password]: "unlogged.password",
+  [ResourcesKey.signIn]: "unlogged.signIn",
   [ResourcesKey.doNotHaveAccount]: "unlogged.loginPage.doNotHaveAccount",
   [ResourcesKey.createAccount]: "unlogged.loginPage.createAccount",
   [ResourcesKey.signInErrorMessage]: "unlogged.loginPage.signInErrorMessage",

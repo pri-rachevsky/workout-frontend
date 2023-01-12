@@ -3,6 +3,46 @@
 .joinUs {
   &-background {
     @include backgroundWithImage("JoinUsPageBackground.jpg");
-    margin-top: -22px;
+  }
+
+  &-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+  }
+
+  &-forms {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    margin-bottom: 20px;
+  }
+
+  &-errorAlert {
+    margin-bottom: 10px;
+    width: 300px;
+  }
+
+  &-input div {
+    margin-bottom: 20px;
+    width: 350px;
+  }
+
+  &-select {
+    margin-bottom: 20px;
+    width: 350px;
+  }
+
+  &-button {
+    width: 90px;
+  }
+
+  &-alreadyHaveAccountCard {
+    width: 320px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
   }
 }

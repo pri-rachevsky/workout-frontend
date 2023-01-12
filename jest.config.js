@@ -12,7 +12,7 @@ module.exports = {
     "node"
   ],
   moduleNameMapper: {
-    "\\.(css|less)$": "<rootDir>/src/infra/test/styleMock.js",
+    "\\.(css|scss)$": "<rootDir>/src/infra/test/styleMock.js",
   },
   setupFilesAfterEnv: [
     "<rootDir>/src/setupTests.ts"

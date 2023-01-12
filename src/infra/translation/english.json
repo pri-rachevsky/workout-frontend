@@ -4,6 +4,9 @@
     "unexpectedErrorMessage": "Something went wrong, please, try again later."
   },
   "unlogged": {
+    "username": "Username",
+    "password": "Password",
+    "signIn": "Sign in",
     "tab": {
       "home": "Home",
       "aboutUs": "About us",
@@ -17,15 +20,24 @@
     },
     "loginPage": {
       "title": "Sign in to Workout",
-      "username": "Username",
-      "password": "Password",
-      "signIn": "Sign in",
       "doNotHaveAccount": "New to Workout?",
       "createAccount": "Create an account.",
       "signInErrorMessage": "Incorrect username or password."
     },
     "joinUsPage": {
-      "title": "TODO: Join Us"
+      "title": "Join us to Workout",
+      "fullName": "Full Name",
+      "confirmPassword": "Confirm Password",
+      "createAccount": "Create account",
+      "alreadyHaveAccount": "Do you already have account?",
+      "accountType": {
+        "label": "I am...",
+        "student": "Student",
+        "personalTrainer": "Personal Trainer"
+      },
+      "errorMessage": {
+        "passwordSameAsConfirmPassword": "Password and Confirm Password values should be the same."
+      }
     },
     "aboutUsPage": {
       "title": "TODO: About Us"

@@ -45,11 +45,12 @@ describe("LoginPage", () => {
     const passwordInput = screen.getByLabelText(/password/i);
     return { createAccountButton, signInButton, usernameInput, passwordInput };
   };
-  it("should render header, forms and button", () => {
+  it("should render header, title, forms and button", () => {
     const { LoginPageMock } = sut();
     render(<LoginPageMock />);
 
     expect(screen.getByText(/header/i)).toBeInTheDocument();
+    expect(screen.getByText(/title/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
     expect(screen.getByText(/signIn/i)).toBeInTheDocument();

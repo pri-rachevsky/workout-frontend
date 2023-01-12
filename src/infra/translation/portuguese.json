@@ -4,6 +4,9 @@
     "unexpectedErrorMessage": "Algo deu errado, por favor, tente novamente depois."
   },
   "unlogged": {
+    "username": "Usuário",
+    "password": "Senha",
+    "signIn": "Entrar",
     "tab": {
       "home": "Início",
       "aboutUs": "Sobre nós",
@@ -17,15 +20,24 @@
     },
     "loginPage": {
       "title": "Faça o login",
-      "username": "Usuário",
-      "password": "Senha",
-      "signIn": "Entrar",
       "doNotHaveAccount": "É novo no Workout?",
       "createAccount": "Crie sua conta.",
       "signInErrorMessage": "Usuário ou senha incorretos."
     },
     "joinUsPage": {
-      "title": "TODO: Join Us"
+      "title": "Junte-se a nós no Workout",
+      "fullName": "Nome Completo",
+      "confirmPassword": "Confirmação de Senha",
+      "createAccount": "Criar conta",
+      "alreadyHaveAccount": "Já possui uma conta?",
+      "accountType": {
+        "label": "Eu sou...",
+        "student": "Estudante",
+        "personalTrainer": "Personal Trainer"
+      },
+      "errorMessage": {
+        "passwordSameAsConfirmPassword": "Senhar e Confirmação de senha precisam ser iguais."
+      }
     },
     "aboutUsPage": {
       "title": "TODO: About Us"

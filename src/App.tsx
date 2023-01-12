@@ -12,7 +12,7 @@ import {
   PersonalTrainerLoggedPage,
   StudentDefaultPage
 } from "./models/systemMode";
-import { AboutUsPage, HomePage, JoinUs, LoginPage } from "./pages/unlogged";
+import { AboutUsPage, HomePage, JoinUsPage, LoginPage } from "./pages/unlogged";
 import { initialLoggedContextValue, LoggedContext } from "./contexts/logged.context";
 import { WorkoutMethodPage } from "./pages/unlogged/WorkoutMethod/WorkoutMethodPage";
 import { ProfessionalProfilePage, StudentListPage } from "./pages/logged/personalTrainer";
@@ -69,11 +69,7 @@ export default function App() {
                 />
                 <Route
                   path={`/${NoUserLoggedPage.joinUs}`}
-                  element={renderComponentOrRedirects(LoginState.noUserLogged, <JoinUs />)}
-                />
-                <Route
-                  path={`/${NoUserLoggedPage.joinUs}`}
-                  element={renderComponentOrRedirects(LoginState.noUserLogged, <JoinUs />)}
+                  element={renderComponentOrRedirects(LoginState.noUserLogged, <JoinUsPage />)}
                 />
 
                 {/* ----------------------PersonalTrainerLoggedPage---------------------- */}

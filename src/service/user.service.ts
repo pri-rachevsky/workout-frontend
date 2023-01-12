@@ -10,4 +10,10 @@ export class UserService {
     if (statusCode === HttpStatusCode.noContent) return null;
     throw new Error((body as ErrorBody).error);
   }
+  public static async create(user: Omit<User, "id">): Promise<User> {
+    const { body, statusCode } = await HttpClient.post<User>({ url: "/user/create", body: user });
+
+    if (statusCode === HttpStatusCode.created) return body as User;
+    throw new Error((body as ErrorBody).error);
+  }
 }
