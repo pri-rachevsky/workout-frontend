@@ -36,7 +36,8 @@
         "personalTrainer": "Personal Trainer"
       },
       "errorMessage": {
-        "passwordSameAsConfirmPassword": "Password and Confirm Password values should be the same."
+        "passwordSameAsConfirmPassword": "Password and Confirm Password values should be the same.",
+        "usernameAlreadyExistsErrorMsg": "Username already exists."
       }
     },
     "aboutUsPage": {

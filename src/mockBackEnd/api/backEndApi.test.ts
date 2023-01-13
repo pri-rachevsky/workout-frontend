@@ -58,12 +58,26 @@ describe("BackEndApi", () => {
           body: entity
         });
       });
+      describe("creating user", () => {
+        it("should return 400 when the username already exist", async () => {
+          const mockedCreateDbQuery = (createDbQuery as jest.Mock).mockResolvedValue("ok");
+          const mockedReadDbQuery = (readDbQuery as jest.Mock).mockResolvedValue([{ username: "name123" }]);
+          const result = await BackEndApi.post("/user/create", {}, { username: "name123" });
+
+          expect(mockedReadDbQuery).toHaveBeenCalledWith("user");
+          expect(mockedCreateDbQuery).not.toHaveBeenCalled();
+          expect(result).toStrictEqual({
+            statusCode: HttpStatusCode.badRequest,
+            body: { error: "username already exists" }
+          });
+        });
+      });
       it("should return 500 when db rejects", async () => {
         (createDbQuery as jest.Mock).mockRejectedValue("error consulting data bank");
         const result = await BackEndApi.post<MockEntity>("/table/create", {}, entity);
 
         expect(result).toStrictEqual({
-          statusCode: HttpStatusCode.serverError,
+          statusCode: HttpStatusCode.badRequest,
           body: { error: "error consulting data bank" }
         });
       });

@@ -45,31 +45,30 @@ export const JoinUsPage: React.FC = () => {
         return;
       }
       const user = await UserService.create({ username, password, role, name: fullName });
-      if (!user) {
-        setError({ hasError: true, message: ResourcesKey.signInErrorMessage });
-      } else {
-        const roleMap = new Map([
-          [
-            Role.PersonalTrainer,
-            {
-              state: LoginState.personalTrainerLogged,
-              path: PersonalTrainerDefaultPage
-            }
-          ],
-          [
-            Role.Student,
-            {
-              state: LoginState.studentLogged,
-              path: StudentDefaultPage
-            }
-          ]
-        ]);
-        const { state, path } = roleMap.get(user.role);
-        setLogged({ state, user });
-        navigate(`/${path}`);
-      }
+
+      const roleMap = new Map([
+        [
+          Role.PersonalTrainer,
+          {
+            state: LoginState.personalTrainerLogged,
+            path: PersonalTrainerDefaultPage
+          }
+        ],
+        [
+          Role.Student,
+          {
+            state: LoginState.studentLogged,
+            path: StudentDefaultPage
+          }
+        ]
+      ]);
+      const { state, path } = roleMap.get(user.role);
+      setLogged({ state, user });
+      navigate(`/${path}`);
     } catch (error) {
-      setError({ hasError: true, message: ResourcesKey.unexpectedErrorMsg });
+      const message =
+        error.message === "username already exists" ? ResourcesKey.usernameErrorMsg : ResourcesKey.unexpectedErrorMsg;
+      setError({ hasError: true, message });
     } finally {
       setIsLoading(false);
     }
@@ -162,7 +161,8 @@ enum ResourcesKey {
   signIn = "signIn",
   signInErrorMessage = "signInErrorMessage",
   unexpectedErrorMsg = "unexpectedErrorMessage",
-  passwordErrorMsg = "passwordErrorMsg"
+  passwordErrorMsg = "passwordErrorMsg",
+  usernameErrorMsg = "usernameErrorMsg"
 }
 
 const resources = {
@@ -179,5 +179,6 @@ const resources = {
   [ResourcesKey.signIn]: "unlogged.signIn",
   [ResourcesKey.signInErrorMessage]: "unlogged.joinUsPage.signInErrorMessage",
   [ResourcesKey.unexpectedErrorMsg]: "common.unexpectedErrorMessage",
-  [ResourcesKey.passwordErrorMsg]: "unlogged.joinUsPage.errorMessage.passwordSameAsConfirmPassword"
+  [ResourcesKey.passwordErrorMsg]: "unlogged.joinUsPage.errorMessage.passwordSameAsConfirmPassword",
+  [ResourcesKey.usernameErrorMsg]: "unlogged.joinUsPage.errorMessage.usernameAlreadyExistsErrorMsg"
 };

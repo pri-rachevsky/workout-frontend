@@ -1,4 +1,5 @@
 import { HttpStatusCode } from "../../models/httpClient";
+import { User } from "../../models/user";
 import { createDbQuery, deleteDbQuery, readDbQuery, updateDbQuery } from "../dataBank/dataBankQuery";
 import {
   SuccessfulCreateAndUpdateResponse,
@@ -18,12 +19,15 @@ export class BackEndApi {
     if (error) return error;
 
     try {
+      if (table === "user") {
+        await this.checkIfUsernameAlreadyExists((entity as User).username);
+      }
       const response = await createDbQuery<T>(table, entity);
       return response === "ok"
         ? (this.createSuccessResponse<T>(HttpStatusCode.created, entity) as SuccessfulCreateAndUpdateResponse<T>)
         : this.createFailResponse(HttpStatusCode.serverError, "unexpected");
     } catch (error) {
-      return this.createFailResponse(HttpStatusCode.serverError, error as string);
+      return this.createFailResponse(HttpStatusCode.badRequest, error.message || (error as string));
     }
   }
 
@@ -142,5 +146,13 @@ export class BackEndApi {
 
   private static createFailResponse(statusCode: HttpStatusCode, error: string): FailedResponse {
     return { statusCode, body: { error } };
+  }
+
+  private static async checkIfUsernameAlreadyExists(username: string): Promise<void> {
+    const users = await readDbQuery<User>("user");
+    const hasSameUsernameInDb = users.some((user) => user.username === username);
+    if (hasSameUsernameInDb) {
+      throw new Error("username already exists");
+    }
   }
 }

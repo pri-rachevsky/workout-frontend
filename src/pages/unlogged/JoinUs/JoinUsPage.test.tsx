@@ -43,8 +43,6 @@ describe("JoinUs", () => {
     const [passwordInput, confirmPasswordInput] = screen.getAllByLabelText(/password/i);
     const fullNameInput = screen.getByLabelText(/fullName/i);
     const accountTypeSelect = screen.getByLabelText(/accountType/i);
-    // const select = screen.getByTestId("accountTypeSelect");
-    // const accountTypeSelect = select.childNodes[0].childNodes[0];
 
     return {
       createAccountButton,
@@ -166,5 +164,117 @@ describe("JoinUs", () => {
     expect(setLoggedMock).toHaveBeenCalledWith({ user: personalTrainerMock, state: LoginState.personalTrainerLogged });
     expect(navigateMock).toHaveBeenCalledWith("/");
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
+  });
+  describe("error messages", () => {
+    it("should display error when the password and confirm password are different", async () => {
+      createServiceMock.mockResolvedValue(personalTrainerMock);
+      const { JoinUsPageMock, setLoggedMock } = sut();
+      render(<JoinUsPageMock />);
+
+      const formData = { ...personalTrainerMock };
+      delete formData.id;
+
+      const {
+        createAccountButton,
+        usernameInput,
+        passwordInput,
+        confirmPasswordInput,
+        fullNameInput,
+        accountTypeSelect
+      } = getElements();
+
+      await act(async () => {
+        userEvent.type(fullNameInput, formData.name);
+        userEvent.type(usernameInput, formData.username);
+        userEvent.type(passwordInput, formData.password);
+        userEvent.type(confirmPasswordInput, "diff password");
+        await userEvent.click(accountTypeSelect);
+      });
+      const personalOption = await screen.findByText("personalTrainer");
+      await act(async () => await userEvent.click(personalOption));
+      accountTypeSelect.blur();
+      await act(async () => await createAccountButton.click());
+
+      expect(createServiceMock).not.toHaveBeenCalled();
+      expect(setLoggedMock).not.toHaveBeenCalled();
+      expect(navigateMock).not.toHaveBeenCalled();
+      expect(screen.getByText(/passwordErrorMsg/i)).toBeInTheDocument();
+      expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
+    });
+    it("should display error when the username already exists", async () => {
+      createServiceMock.mockRejectedValue(new Error("username already exists"));
+      const { JoinUsPageMock, setLoggedMock } = sut();
+      render(<JoinUsPageMock />);
+
+      const formData = { ...personalTrainerMock };
+      delete formData.id;
+
+      const {
+        createAccountButton,
+        usernameInput,
+        passwordInput,
+        confirmPasswordInput,
+        fullNameInput,
+        accountTypeSelect
+      } = getElements();
+
+      await act(async () => {
+        userEvent.type(fullNameInput, formData.name);
+        userEvent.type(usernameInput, formData.username);
+        userEvent.type(passwordInput, formData.password);
+        userEvent.type(confirmPasswordInput, formData.password);
+        await userEvent.click(accountTypeSelect);
+      });
+      const personalOption = await screen.findByText("personalTrainer");
+      await act(async () => await userEvent.click(personalOption));
+      accountTypeSelect.blur();
+      await act(async () => await createAccountButton.click());
+
+      expect(createServiceMock).toHaveBeenCalled();
+      expect(setLoggedMock).not.toHaveBeenCalled();
+      expect(navigateMock).not.toHaveBeenCalled();
+      expect(screen.getByText(/usernameErrorMsg/i)).toBeInTheDocument();
+      expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
+    });
+    it("else should display unexpected error", async () => {
+      createServiceMock.mockRejectedValue("error");
+      const { JoinUsPageMock, setLoggedMock } = sut();
+      render(<JoinUsPageMock />);
+
+      const formData = { ...personalTrainerMock };
+      delete formData.id;
+
+      const {
+        createAccountButton,
+        usernameInput,
+        passwordInput,
+        confirmPasswordInput,
+        fullNameInput,
+        accountTypeSelect
+      } = getElements();
+
+      await act(async () => {
+        userEvent.type(fullNameInput, formData.name);
+        userEvent.type(usernameInput, formData.username);
+        userEvent.type(passwordInput, formData.password);
+        userEvent.type(confirmPasswordInput, formData.password);
+        await userEvent.click(accountTypeSelect);
+      });
+      const personalOption = await screen.findByText("personalTrainer");
+      await act(async () => await userEvent.click(personalOption));
+      accountTypeSelect.blur();
+      await act(async () => await createAccountButton.click());
+
+      expect(createServiceMock).toHaveBeenCalled();
+      expect(setLoggedMock).not.toHaveBeenCalled();
+      expect(navigateMock).not.toHaveBeenCalled();
+      expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
+      expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();
+      expect(screen.getByText(/unexpectedErrorMessage/i)).toBeInTheDocument();
+    });
   });
 });

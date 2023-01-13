@@ -36,7 +36,8 @@
         "personalTrainer": "Personal Trainer"
       },
       "errorMessage": {
-        "passwordSameAsConfirmPassword": "Senhar e Confirmação de senha precisam ser iguais."
+        "passwordSameAsConfirmPassword": "Senhar e Confirmação de senha precisam ser iguais.",
+        "usernameAlreadyExistsErrorMsg": "Este usuário já existe."
       }
     },
     "aboutUsPage": {
