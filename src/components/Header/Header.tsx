@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AppBar, Toolbar, Icon, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { LoginState, NoUserLoggedPage, Page } from "../../models/systemMode";
+import { LoginState, UnloggedUrlPath, UrlPath } from "../../models/systemMode";
 import "./Header.scss";
 import LanguageToggle from "../LanguageToggle/LanguageToggle";
 import { LoggedContext } from "../../contexts/logged.context";
@@ -12,7 +12,7 @@ import {
 } from "./HeaderContent";
 
 export type HeaderProps = {
-  tabSelected: Page;
+  tabSelected: UrlPath;
 };
 
 export default function Header(props: HeaderProps) {
@@ -22,8 +22,8 @@ export default function Header(props: HeaderProps) {
     setLogged
   } = useContext(LoggedContext);
 
-  const onTabSelected = (tab: NoUserLoggedPage) => {
-    navigate(`/${tab}`);
+  const onTabSelected = (tab: UnloggedUrlPath) => {
+    navigate(tab);
   };
 
   const headerContentProps = {

@@ -7,7 +7,7 @@ import Header from "../../../components/Header/Header";
 import "./LoginPage.scss";
 import { useI18n } from "../../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
-import { NoUserLoggedPage } from "../../../models/systemMode";
+import { UnloggedUrlPath } from "../../../models/systemMode";
 import { useLoginUser } from "../../../hooks/useLoginUser";
 
 export const LoginPage: React.FC = () => {
@@ -40,13 +40,13 @@ export const LoginPage: React.FC = () => {
   };
 
   const onCreateAccountClick = () => {
-    navigate(`/${NoUserLoggedPage.joinUs}`);
+    navigate(UnloggedUrlPath.joinUs);
   };
 
   return (
     <PageLoadingWrapper isLoading={isLoading}>
       <>
-        <Header tabSelected={NoUserLoggedPage.login} />
+        <Header tabSelected={UnloggedUrlPath.login} />
         <div className="login-background">
           <div className="login-content">
             <Card className="login-forms">

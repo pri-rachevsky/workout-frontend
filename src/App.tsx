@@ -3,7 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { initI18n } from "./infra/translation/i18n";
 import { I18nextProvider } from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { LoginState, NoUserLoggedPage, Page, PersonalTrainerLoggedPage, DefaultPage } from "./models/systemMode";
+import { LoginState, UnloggedUrlPath, PersonalTrainerUrlPath, DefaultUrlPath } from "./models/systemMode";
 import { AboutUsPage, HomePage, JoinUsPage, LoginPage } from "./pages/unlogged";
 import { initialLoggedContextValue, LoggedContext } from "./contexts/logged.context";
 import { WorkoutMethodPage } from "./pages/unlogged/WorkoutMethod/WorkoutMethodPage";
@@ -14,17 +14,14 @@ import { themeOptions } from "./infra/layout/theme";
 const theme = createTheme(themeOptions);
 
 export default function App() {
-  const [defaultPage, setDefaultPage] = useState<{ element: ReactNode; path: Page }>({
-    element: <HomePage />,
-    path: DefaultPage
-  });
+  const [defaultPage, setDefaultPage] = useState<ReactNode>(<HomePage />);
   const [logged, setLogged] = useState<LoggedContext>(initialLoggedContextValue.logged);
   const i18n = initI18n();
 
   const loginStateToDefaultPageMap = {
-    [LoginState.noUserLogged]: { element: <HomePage />, path: DefaultPage },
-    [LoginState.personalTrainerLogged]: { element: <StudentListPage />, path: DefaultPage },
-    [LoginState.studentLogged]: { element: <ClientProfilePage />, path: DefaultPage }
+    [LoginState.noUserLogged]: <HomePage />,
+    [LoginState.personalTrainerLogged]: <StudentListPage />,
+    [LoginState.studentLogged]: <ClientProfilePage />
   };
 
   useEffect(() => {
@@ -33,8 +30,7 @@ export default function App() {
   }, [logged]);
 
   const renderComponentOrRedirects = (loggedState: LoginState, Component: ReactNode) => {
-    const { path } = loginStateToDefaultPageMap[loggedState];
-    return logged.state !== loggedState ? <Navigate replace to={`/${path}`} /> : Component;
+    return logged.state !== loggedState ? <Navigate replace to={DefaultUrlPath} /> : Component;
   };
 
   return (
@@ -44,29 +40,29 @@ export default function App() {
           <LoggedContext.Provider value={{ logged, setLogged }}>
             <BrowserRouter>
               <Routes>
-                <Route path="/" element={defaultPage.element} />
+                <Route path={DefaultUrlPath} element={defaultPage} />
 
                 {/* ----------------------NoUserLoggedPage---------------------- */}
                 <Route
-                  path={`/${NoUserLoggedPage.login}`}
+                  path={UnloggedUrlPath.login}
                   element={renderComponentOrRedirects(LoginState.noUserLogged, <LoginPage />)}
                 />
                 <Route
-                  path={`/${NoUserLoggedPage.aboutUs}`}
+                  path={UnloggedUrlPath.aboutUs}
                   element={renderComponentOrRedirects(LoginState.noUserLogged, <AboutUsPage />)}
                 />
                 <Route
-                  path={`/${NoUserLoggedPage.workoutMethod}`}
+                  path={UnloggedUrlPath.workoutMethod}
                   element={renderComponentOrRedirects(LoginState.noUserLogged, <WorkoutMethodPage />)}
                 />
                 <Route
-                  path={`/${NoUserLoggedPage.joinUs}`}
+                  path={UnloggedUrlPath.joinUs}
                   element={renderComponentOrRedirects(LoginState.noUserLogged, <JoinUsPage />)}
                 />
 
                 {/* ----------------------PersonalTrainerLoggedPage---------------------- */}
                 <Route
-                  path={`/${PersonalTrainerLoggedPage.profile}`}
+                  path={PersonalTrainerUrlPath.profile}
                   element={renderComponentOrRedirects(LoginState.personalTrainerLogged, <ProfessionalProfilePage />)}
                 />
 

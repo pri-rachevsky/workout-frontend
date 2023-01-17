@@ -6,7 +6,7 @@ import Header from "../../../components/Header/Header";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
 import { useI18n } from "../../../hooks/useI18n";
 import { useLoginUser } from "../../../hooks/useLoginUser";
-import { NoUserLoggedPage } from "../../../models/systemMode";
+import { UnloggedUrlPath } from "../../../models/systemMode";
 import { Role } from "../../../models/user";
 import { UserService } from "../../../service/user.service";
 import "./JoinUs.scss";
@@ -51,7 +51,7 @@ export const JoinUsPage: React.FC = () => {
   };
 
   const onSignInClick = () => {
-    navigate(`/${NoUserLoggedPage.login}`);
+    navigate(UnloggedUrlPath.login);
   };
 
   const JoinUsInput: React.FC<{
@@ -70,7 +70,7 @@ export const JoinUsPage: React.FC = () => {
   return (
     <PageLoadingWrapper isLoading={isLoading}>
       <>
-        <Header tabSelected={NoUserLoggedPage.joinUs} />
+        <Header tabSelected={UnloggedUrlPath.joinUs} />
         <div className="joinUs-background">
           <div className="joinUs-content">
             <Card className="joinUs-forms">

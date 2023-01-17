@@ -2,11 +2,11 @@ import React from "react";
 import { Tab, Tabs } from "@mui/material";
 import { useI18n } from "../../hooks/useI18n";
 import {
-  DefaultPage,
-  NoUserLoggedPage,
-  Page,
-  PersonalTrainerLoggedPage,
-  StudentLoggedPage
+  DefaultUrlPath,
+  UnloggedUrlPath,
+  UrlPath,
+  PersonalTrainerUrlPath,
+  StudentUrlPath
 } from "../../models/systemMode";
 import "./Header.scss";
 import { HeaderProps } from "./Header";
@@ -17,20 +17,20 @@ const HeaderLogo: React.FC<HeaderLogoProps> = ({ onClick }) => (
 );
 
 type HeaderContentProps = HeaderProps & {
-  onTabSelected: (tab: Page) => void;
+  onTabSelected: (tab: UrlPath) => void;
 };
 
 export const NoUserLoggedHeaderContent: React.FC<HeaderContentProps> = ({ tabSelected, onTabSelected }) => {
   const { translate } = useI18n(resources);
   return (
     <>
-      <HeaderLogo onClick={() => onTabSelected(DefaultPage)} />
+      <HeaderLogo onClick={() => onTabSelected(DefaultUrlPath)} />
       <Tabs value={tabSelected} onChange={(_, tab) => onTabSelected(tab)}>
-        <Tab label={translate(ResourcesKey.home)} value={NoUserLoggedPage.home} />
-        <Tab label={translate(ResourcesKey.aboutUs)} value={NoUserLoggedPage.aboutUs} />
-        <Tab label={translate(ResourcesKey.workoutMethod)} value={NoUserLoggedPage.workoutMethod} />
-        <Tab label={translate(ResourcesKey.joinUs)} value={NoUserLoggedPage.joinUs} />
-        <Tab label={translate(ResourcesKey.login)} value={NoUserLoggedPage.login} />
+        <Tab label={translate(ResourcesKey.home)} value={UnloggedUrlPath.home} />
+        <Tab label={translate(ResourcesKey.aboutUs)} value={UnloggedUrlPath.aboutUs} />
+        <Tab label={translate(ResourcesKey.workoutMethod)} value={UnloggedUrlPath.workoutMethod} />
+        <Tab label={translate(ResourcesKey.joinUs)} value={UnloggedUrlPath.joinUs} />
+        <Tab label={translate(ResourcesKey.login)} value={UnloggedUrlPath.login} />
       </Tabs>
     </>
   );
@@ -40,10 +40,10 @@ export const PersonalTrainerLoggedHeaderContent: React.FC<HeaderContentProps> = 
   const { translate } = useI18n(resources);
   return (
     <>
-      <HeaderLogo onClick={() => onTabSelected(PersonalTrainerLoggedPage.studentList)} />
+      <HeaderLogo onClick={() => onTabSelected(PersonalTrainerUrlPath.studentList)} />
       <Tabs value={tabSelected} onChange={(_, tab) => onTabSelected(tab)}>
-        <Tab label={translate(ResourcesKey.myStudents)} value={PersonalTrainerLoggedPage.studentList} />
-        <Tab label={translate(ResourcesKey.professionalProfile)} value={PersonalTrainerLoggedPage.profile} />
+        <Tab label={translate(ResourcesKey.myStudents)} value={PersonalTrainerUrlPath.studentList} />
+        <Tab label={translate(ResourcesKey.professionalProfile)} value={PersonalTrainerUrlPath.profile} />
       </Tabs>
     </>
   );
@@ -53,9 +53,9 @@ export const StudentLoggedHeaderContent: React.FC<HeaderContentProps> = ({ tabSe
   const { translate } = useI18n(resources);
   return (
     <>
-      <HeaderLogo onClick={() => onTabSelected(StudentLoggedPage.profile)} />
+      <HeaderLogo onClick={() => onTabSelected(StudentUrlPath.profile)} />
       <Tabs value={tabSelected} onChange={(_, tab) => onTabSelected(tab)}>
-        <Tab label={translate(ResourcesKey.clientProfile)} value={StudentLoggedPage.profile} />
+        <Tab label={translate(ResourcesKey.clientProfile)} value={StudentUrlPath.profile} />
       </Tabs>
     </>
   );

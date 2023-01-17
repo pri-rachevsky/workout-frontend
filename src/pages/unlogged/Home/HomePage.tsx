@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../../components/Header/Header";
 import { useI18n } from "../../../hooks/useI18n";
-import { NoUserLoggedPage } from "../../../models/systemMode";
+import { UnloggedUrlPath } from "../../../models/systemMode";
 import { Button } from "@mui/material";
 import "./HomePage.scss";
 import { useNavigate } from "react-router-dom";
@@ -11,17 +11,17 @@ export const HomePage: React.FC = () => {
   const navigate = useNavigate();
   return (
     <>
-      <Header tabSelected={NoUserLoggedPage.home} />
+      <Header tabSelected={UnloggedUrlPath.home} />
       <div className="home-background">
         <div className="home-content">
           <div className="home-texts">
             <h1 className="home-title">{translate(ResourcesKey.title)}</h1>
             <h2 className="home-subtitle">{translate(ResourcesKey.subtitle)}</h2>
             <div className="home-buttons">
-              <Button variant="outlined" onClick={() => navigate(`/${NoUserLoggedPage.joinUs}`)}>
+              <Button variant="outlined" onClick={() => navigate(UnloggedUrlPath.joinUs)}>
                 {translate(ResourcesKey.joinUs)}
               </Button>
-              <Button variant="outlined" onClick={() => navigate(`/${NoUserLoggedPage.login}`)}>
+              <Button variant="outlined" onClick={() => navigate(UnloggedUrlPath.login)}>
                 {translate(ResourcesKey.login)}
               </Button>
             </div>

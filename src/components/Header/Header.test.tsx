@@ -2,12 +2,12 @@ import React from "react";
 import { act, render, screen } from "@testing-library/react";
 import Header from "./Header";
 import {
-  DefaultPage,
+  DefaultUrlPath,
   LoginState,
-  NoUserLoggedPage,
-  Page,
-  PersonalTrainerLoggedPage,
-  StudentLoggedPage
+  UnloggedUrlPath,
+  UrlPath,
+  PersonalTrainerUrlPath,
+  StudentUrlPath
 } from "../../models/systemMode";
 import { useI18nMock } from "../../infra/test/useI18nMock";
 import { useI18n } from "../../hooks/useI18n";
@@ -19,7 +19,7 @@ jest.mock("../../hooks/useI18n");
 
 type SutParams = {
   loginState: LoginState;
-  tabSelected: Page;
+  tabSelected: UrlPath;
 };
 
 const sut = ({ loginState, tabSelected }: SutParams) => {
@@ -44,7 +44,7 @@ describe("Header", () => {
   });
   describe("when it is noUserLogged mode", () => {
     test("should render logo, language toggle and tabs", () => {
-      const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: DefaultPage });
+      const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: DefaultUrlPath });
       render(<HeaderMock />);
 
       expect(screen.getByRole("img", { name: /workout logo/i })).toBeInTheDocument();
@@ -56,20 +56,20 @@ describe("Header", () => {
     });
     describe("should navigate correctly", () => {
       it.each([
-        ["workoutMethod", NoUserLoggedPage.workoutMethod],
-        ["joinUs", NoUserLoggedPage.joinUs],
-        ["aboutUs", NoUserLoggedPage.aboutUs],
-        ["login", NoUserLoggedPage.login]
+        ["workoutMethod", UnloggedUrlPath.workoutMethod],
+        ["joinUs", UnloggedUrlPath.joinUs],
+        ["aboutUs", UnloggedUrlPath.aboutUs],
+        ["login", UnloggedUrlPath.login]
       ])("when click on %s tab", async (tabText, urlIndex) => {
-        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: NoUserLoggedPage.home });
+        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: UnloggedUrlPath.home });
         render(<HeaderMock />);
 
         const button = screen.getByText(tabText);
         await act(() => button.click());
-        expect(navigateMock).toHaveBeenCalledWith(`/${urlIndex}`);
+        expect(navigateMock).toHaveBeenCalledWith(urlIndex);
       });
       test("when click on home tab", async () => {
-        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: NoUserLoggedPage.login });
+        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: UnloggedUrlPath.login });
         render(<HeaderMock />);
 
         const button = screen.getByText("home");
@@ -77,7 +77,7 @@ describe("Header", () => {
         expect(navigateMock).toHaveBeenCalledWith("/");
       });
       test("when click on logo image", async () => {
-        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: NoUserLoggedPage.login });
+        const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: UnloggedUrlPath.login });
         render(<HeaderMock />);
 
         const logo = screen.getByRole("img", { name: /workout logo/i });
@@ -90,7 +90,7 @@ describe("Header", () => {
     test("should render logo, language toggle and tabs", () => {
       const { HeaderMock } = sut({
         loginState: LoginState.personalTrainerLogged,
-        tabSelected: PersonalTrainerLoggedPage.studentList
+        tabSelected: PersonalTrainerUrlPath.studentList
       });
       render(<HeaderMock />);
 
@@ -100,24 +100,24 @@ describe("Header", () => {
       expect(screen.getByTestId("logoutButton")).toBeInTheDocument();
     });
     describe("should navigate correctly", () => {
-      it.each([["professionalProfile", PersonalTrainerLoggedPage.profile]])(
+      it.each([["professionalProfile", PersonalTrainerUrlPath.profile]])(
         "when click on %s tab",
         async (tabText, urlIndex) => {
           const { HeaderMock } = sut({
             loginState: LoginState.personalTrainerLogged,
-            tabSelected: PersonalTrainerLoggedPage.studentList
+            tabSelected: PersonalTrainerUrlPath.studentList
           });
           render(<HeaderMock />);
 
           const button = screen.getByText(tabText);
           await act(() => button.click());
-          expect(navigateMock).toHaveBeenCalledWith(`/${urlIndex}`);
+          expect(navigateMock).toHaveBeenCalledWith(urlIndex);
         }
       );
       test("when click on myStudents tab", async () => {
         const { HeaderMock } = sut({
           loginState: LoginState.personalTrainerLogged,
-          tabSelected: PersonalTrainerLoggedPage.profile
+          tabSelected: PersonalTrainerUrlPath.profile
         });
         render(<HeaderMock />);
 
@@ -128,7 +128,7 @@ describe("Header", () => {
       test("when click on logo image", async () => {
         const { HeaderMock } = sut({
           loginState: LoginState.personalTrainerLogged,
-          tabSelected: PersonalTrainerLoggedPage.profile
+          tabSelected: PersonalTrainerUrlPath.profile
         });
         render(<HeaderMock />);
 
@@ -142,7 +142,7 @@ describe("Header", () => {
     test("should render logo, language toggle and tabs", () => {
       const { HeaderMock } = sut({
         loginState: LoginState.studentLogged,
-        tabSelected: StudentLoggedPage.profile
+        tabSelected: StudentUrlPath.profile
       });
       render(<HeaderMock />);
 
@@ -154,7 +154,7 @@ describe("Header", () => {
       test.skip("when click on profile tab", async () => {
         const { HeaderMock } = sut({
           loginState: LoginState.studentLogged,
-          tabSelected: StudentLoggedPage.profile //TODO
+          tabSelected: StudentUrlPath.profile //TODO
         });
         render(<HeaderMock />);
 
@@ -165,7 +165,7 @@ describe("Header", () => {
       test("when click on logo image", async () => {
         const { HeaderMock } = sut({
           loginState: LoginState.studentLogged,
-          tabSelected: StudentLoggedPage.profile
+          tabSelected: StudentUrlPath.profile
         });
         render(<HeaderMock />);
 
@@ -178,7 +178,7 @@ describe("Header", () => {
   test("when click on logout button should call setLogged", async () => {
     const { HeaderMock, setLoggedMock } = sut({
       loginState: LoginState.studentLogged,
-      tabSelected: StudentLoggedPage.profile
+      tabSelected: StudentUrlPath.profile
     });
     render(<HeaderMock />);
 

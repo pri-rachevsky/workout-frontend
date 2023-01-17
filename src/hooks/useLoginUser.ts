@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { LoggedContext } from "../contexts/logged.context";
-import { DefaultPage, LoginState } from "../models/systemMode";
+import { DefaultUrlPath, LoginState } from "../models/systemMode";
 import { Role, User } from "../models/user";
 
 export const useLoginUser = () => {
@@ -15,7 +15,7 @@ export const useLoginUser = () => {
     };
     const state = roleMap[user.role];
     setLogged({ state, user });
-    navigate(`/${DefaultPage}`);
+    navigate(DefaultUrlPath);
   };
 
   return { loginUser };
