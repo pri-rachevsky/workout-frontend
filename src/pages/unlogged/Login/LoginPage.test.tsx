@@ -6,33 +6,31 @@ import { useNavigate } from "react-router-dom";
 import { useI18nMock } from "../../../infra/test/useI18nMock";
 import userEvent from "@testing-library/user-event";
 import { UserService } from "../../../service/user.service";
-import { personalTrainerMock, studentMock } from "../../../infra/test/userMock";
-import { LoggedContext } from "../../../contexts/logged.context";
-import { LoginState } from "../../../models/systemMode";
+import { studentMock } from "../../../infra/test/userMock";
+import { useLoginUser } from "../../../hooks/useLoginUser";
 
 jest.mock("../../../components/Header/Header", () => () => <p>Header</p>);
 jest.mock("react-router-dom");
 jest.mock("../../../hooks/useI18n");
 jest.mock("../../../service/user.service");
+jest.mock("../../../hooks/useLoginUser");
 
 const sut = () => {
-  const setLoggedMock = jest.fn();
-  const LoginPageMock = () => (
-    <LoggedContext.Provider value={{ logged: { state: LoginState.noUserLogged }, setLogged: setLoggedMock }}>
-      <LoginPage />
-    </LoggedContext.Provider>
-  );
+  const LoginPageMock = () => <LoginPage />;
 
-  return { LoginPageMock, setLoggedMock };
+  return { LoginPageMock };
 };
 
 describe("LoginPage", () => {
   const navigateMock = jest.fn();
   const loginServiceMock = jest.fn();
+  const loginUserMock = jest.fn();
+
   beforeEach(() => {
     (useI18n as jest.Mock).mockImplementation(useI18nMock);
     (useNavigate as jest.Mock).mockImplementation(() => navigateMock);
     (UserService.login as jest.Mock).mockImplementation(loginServiceMock);
+    (useLoginUser as jest.Mock).mockImplementation(() => ({ loginUser: loginUserMock }));
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -68,9 +66,9 @@ describe("LoginPage", () => {
     expect(navigateMock).toHaveBeenCalledWith("/join-us");
   });
 
-  it("should call login service when click on sign in button with right logged data when it is student", async () => {
+  it("should call login service when click on sign in button with right logged data", async () => {
     loginServiceMock.mockResolvedValue(studentMock);
-    const { LoginPageMock, setLoggedMock } = sut();
+    const { LoginPageMock } = sut();
     render(<LoginPageMock />);
 
     const { signInButton, usernameInput, passwordInput } = getElements();
@@ -86,31 +84,7 @@ describe("LoginPage", () => {
     await act(async () => await signInButton.click());
 
     expect(loginServiceMock).toHaveBeenCalledWith("pri", "1234");
-    expect(setLoggedMock).toHaveBeenCalledWith({ user: studentMock, state: LoginState.studentLogged });
-    expect(navigateMock).toHaveBeenCalledWith("/");
-    expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
-  });
-  it("should call login service when click on sign in button with right logged data when it is personal trainer", async () => {
-    loginServiceMock.mockResolvedValue(personalTrainerMock);
-    const { LoginPageMock, setLoggedMock } = sut();
-    render(<LoginPageMock />);
-
-    const { signInButton, usernameInput, passwordInput } = getElements();
-    expect(signInButton).toBeDisabled();
-
-    await act(async () => {
-      userEvent.type(usernameInput, "tay");
-      userEvent.type(passwordInput, "5678");
-      passwordInput.blur();
-    });
-    expect(signInButton).toBeEnabled();
-
-    await act(async () => await signInButton.click());
-
-    expect(loginServiceMock).toHaveBeenCalledWith("tay", "5678");
-    expect(setLoggedMock).toHaveBeenCalledWith({ user: personalTrainerMock, state: LoginState.personalTrainerLogged });
-    expect(navigateMock).toHaveBeenCalledWith("/");
+    expect(loginUserMock).toHaveBeenCalledWith(studentMock);
     expect(screen.queryByText(/signInErrorMessage/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
   });

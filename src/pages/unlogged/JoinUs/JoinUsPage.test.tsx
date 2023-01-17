@@ -5,33 +5,31 @@ import { useI18nMock } from "../../../infra/test/useI18nMock";
 import { JoinUsPage } from "./JoinUsPage";
 import { useNavigate } from "react-router-dom";
 import { UserService } from "../../../service/user.service";
-import { LoggedContext } from "../../../contexts/logged.context";
-import { LoginState } from "../../../models/systemMode";
 import { personalTrainerMock, studentMock } from "../../../infra/test/userMock";
+import { useLoginUser } from "../../../hooks/useLoginUser";
 import userEvent from "@testing-library/user-event";
 
 jest.mock("../../../components/Header/Header", () => () => <p>Header</p>);
 jest.mock("react-router-dom");
 jest.mock("../../../hooks/useI18n");
 jest.mock("../../../service/user.service");
+jest.mock("../../../hooks/useLoginUser");
 
 const sut = () => {
-  const setLoggedMock = jest.fn();
-  const JoinUsPageMock = () => (
-    <LoggedContext.Provider value={{ logged: { state: LoginState.noUserLogged }, setLogged: setLoggedMock }}>
-      <JoinUsPage />
-    </LoggedContext.Provider>
-  );
+  const JoinUsPageMock = () => <JoinUsPage />;
 
-  return { JoinUsPageMock, setLoggedMock };
+  return { JoinUsPageMock };
 };
 describe("JoinUs", () => {
   const navigateMock = jest.fn();
   const createServiceMock = jest.fn();
+  const loginUserMock = jest.fn();
+
   beforeEach(() => {
     (useNavigate as jest.Mock).mockImplementation(() => navigateMock);
     (useI18n as jest.Mock).mockImplementation(useI18nMock);
     (UserService.create as jest.Mock).mockImplementation(createServiceMock);
+    (useLoginUser as jest.Mock).mockImplementation(() => ({ loginUser: loginUserMock }));
   });
   afterEach(() => {
     jest.clearAllMocks();
@@ -89,7 +87,7 @@ describe("JoinUs", () => {
 
   it("should call create service when click on createAccount button with right data when it is student", async () => {
     createServiceMock.mockResolvedValue(studentMock);
-    const { JoinUsPageMock, setLoggedMock } = sut();
+    const { JoinUsPageMock } = sut();
     render(<JoinUsPageMock />);
 
     const formData = { ...studentMock };
@@ -122,47 +120,7 @@ describe("JoinUs", () => {
     await act(async () => await createAccountButton.click());
 
     expect(createServiceMock).toHaveBeenCalledWith(formData);
-    expect(setLoggedMock).toHaveBeenCalledWith({ user: studentMock, state: LoginState.studentLogged });
-    expect(navigateMock).toHaveBeenCalledWith("/");
-    expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
-  });
-  it("should call create service when click on createAccount button with right data when it is personal trainer", async () => {
-    createServiceMock.mockResolvedValue(personalTrainerMock);
-    const { JoinUsPageMock, setLoggedMock } = sut();
-    render(<JoinUsPageMock />);
-
-    const formData = { ...personalTrainerMock };
-    delete formData.id;
-
-    const {
-      createAccountButton,
-      usernameInput,
-      passwordInput,
-      confirmPasswordInput,
-      fullNameInput,
-      accountTypeSelect
-    } = getElements();
-    expect(createAccountButton).toBeDisabled();
-
-    confirmPasswordInput.blur();
-
-    await act(async () => {
-      userEvent.type(fullNameInput, formData.name);
-      userEvent.type(usernameInput, formData.username);
-      userEvent.type(passwordInput, formData.password);
-      userEvent.type(confirmPasswordInput, formData.password);
-      await userEvent.click(accountTypeSelect);
-    });
-    const personalOption = await screen.findByText("personalTrainer");
-    await act(async () => await userEvent.click(personalOption));
-    accountTypeSelect.blur();
-    expect(createAccountButton).toBeEnabled();
-
-    await act(async () => await createAccountButton.click());
-
-    expect(createServiceMock).toHaveBeenCalledWith(formData);
-    expect(setLoggedMock).toHaveBeenCalledWith({ user: personalTrainerMock, state: LoginState.personalTrainerLogged });
-    expect(navigateMock).toHaveBeenCalledWith("/");
+    expect(loginUserMock).toHaveBeenCalledWith(studentMock);
     expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
@@ -170,7 +128,7 @@ describe("JoinUs", () => {
   describe("error messages", () => {
     it("should display error when the password and confirm password are different", async () => {
       createServiceMock.mockResolvedValue(personalTrainerMock);
-      const { JoinUsPageMock, setLoggedMock } = sut();
+      const { JoinUsPageMock } = sut();
       render(<JoinUsPageMock />);
 
       const formData = { ...personalTrainerMock };
@@ -198,15 +156,14 @@ describe("JoinUs", () => {
       await act(async () => await createAccountButton.click());
 
       expect(createServiceMock).not.toHaveBeenCalled();
-      expect(setLoggedMock).not.toHaveBeenCalled();
-      expect(navigateMock).not.toHaveBeenCalled();
+      expect(loginUserMock).not.toHaveBeenCalled();
       expect(screen.getByText(/passwordErrorMsg/i)).toBeInTheDocument();
       expect(screen.queryByText(/unexpectedErrorMessage/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
     });
     it("should display error when the username already exists", async () => {
       createServiceMock.mockRejectedValue(new Error("username already exists"));
-      const { JoinUsPageMock, setLoggedMock } = sut();
+      const { JoinUsPageMock } = sut();
       render(<JoinUsPageMock />);
 
       const formData = { ...personalTrainerMock };
@@ -234,7 +191,7 @@ describe("JoinUs", () => {
       await act(async () => await createAccountButton.click());
 
       expect(createServiceMock).toHaveBeenCalled();
-      expect(setLoggedMock).not.toHaveBeenCalled();
+      expect(loginUserMock).not.toHaveBeenCalled();
       expect(navigateMock).not.toHaveBeenCalled();
       expect(screen.getByText(/usernameErrorMsg/i)).toBeInTheDocument();
       expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();
@@ -242,7 +199,7 @@ describe("JoinUs", () => {
     });
     it("else should display unexpected error", async () => {
       createServiceMock.mockRejectedValue("error");
-      const { JoinUsPageMock, setLoggedMock } = sut();
+      const { JoinUsPageMock } = sut();
       render(<JoinUsPageMock />);
 
       const formData = { ...personalTrainerMock };
@@ -270,7 +227,7 @@ describe("JoinUs", () => {
       await act(async () => await createAccountButton.click());
 
       expect(createServiceMock).toHaveBeenCalled();
-      expect(setLoggedMock).not.toHaveBeenCalled();
+      expect(loginUserMock).not.toHaveBeenCalled();
       expect(navigateMock).not.toHaveBeenCalled();
       expect(screen.queryByText(/usernameErrorMsg/i)).not.toBeInTheDocument();
       expect(screen.queryByText(/passwordErrorMsg/i)).not.toBeInTheDocument();

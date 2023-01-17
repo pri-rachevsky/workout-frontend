@@ -2,8 +2,8 @@ import React from "react";
 import { act, render, screen } from "@testing-library/react";
 import Header from "./Header";
 import {
+  DefaultPage,
   LoginState,
-  NoUserLoggedDefaultPage,
   NoUserLoggedPage,
   Page,
   PersonalTrainerLoggedPage,
@@ -44,7 +44,7 @@ describe("Header", () => {
   });
   describe("when it is noUserLogged mode", () => {
     test("should render logo, language toggle and tabs", () => {
-      const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: NoUserLoggedDefaultPage });
+      const { HeaderMock } = sut({ loginState: LoginState.noUserLogged, tabSelected: DefaultPage });
       render(<HeaderMock />);
 
       expect(screen.getByRole("img", { name: /workout logo/i })).toBeInTheDocument();

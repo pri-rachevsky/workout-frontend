@@ -3,15 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { initI18n } from "./infra/translation/i18n";
 import { I18nextProvider } from "react-i18next";
 import { createTheme, ThemeProvider } from "@mui/material";
-import {
-  LoginState,
-  NoUserLoggedDefaultPage,
-  NoUserLoggedPage,
-  Page,
-  PersonalTrainerDefaultPage,
-  PersonalTrainerLoggedPage,
-  StudentDefaultPage
-} from "./models/systemMode";
+import { LoginState, NoUserLoggedPage, Page, PersonalTrainerLoggedPage, DefaultPage } from "./models/systemMode";
 import { AboutUsPage, HomePage, JoinUsPage, LoginPage } from "./pages/unlogged";
 import { initialLoggedContextValue, LoggedContext } from "./contexts/logged.context";
 import { WorkoutMethodPage } from "./pages/unlogged/WorkoutMethod/WorkoutMethodPage";
@@ -24,15 +16,15 @@ const theme = createTheme(themeOptions);
 export default function App() {
   const [defaultPage, setDefaultPage] = useState<{ element: ReactNode; path: Page }>({
     element: <HomePage />,
-    path: NoUserLoggedDefaultPage
+    path: DefaultPage
   });
   const [logged, setLogged] = useState<LoggedContext>(initialLoggedContextValue.logged);
   const i18n = initI18n();
 
   const loginStateToDefaultPageMap = {
-    [LoginState.noUserLogged]: { element: <HomePage />, path: NoUserLoggedDefaultPage },
-    [LoginState.personalTrainerLogged]: { element: <StudentListPage />, path: PersonalTrainerDefaultPage },
-    [LoginState.studentLogged]: { element: <ClientProfilePage />, path: StudentDefaultPage }
+    [LoginState.noUserLogged]: { element: <HomePage />, path: DefaultPage },
+    [LoginState.personalTrainerLogged]: { element: <StudentListPage />, path: DefaultPage },
+    [LoginState.studentLogged]: { element: <ClientProfilePage />, path: DefaultPage }
   };
 
   useEffect(() => {

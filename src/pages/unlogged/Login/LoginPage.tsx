@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Alert, Button, Card, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
@@ -7,19 +7,13 @@ import Header from "../../../components/Header/Header";
 import "./LoginPage.scss";
 import { useI18n } from "../../../hooks/useI18n";
 import { useNavigate } from "react-router-dom";
-import { Role } from "../../../models/user";
-import {
-  LoginState,
-  NoUserLoggedPage,
-  PersonalTrainerDefaultPage,
-  StudentDefaultPage
-} from "../../../models/systemMode";
-import { LoggedContext } from "../../../contexts/logged.context";
+import { NoUserLoggedPage } from "../../../models/systemMode";
+import { useLoginUser } from "../../../hooks/useLoginUser";
 
 export const LoginPage: React.FC = () => {
   const { translate } = useI18n(resources);
   const navigate = useNavigate();
-  const { setLogged } = useContext(LoggedContext);
+  const { loginUser } = useLoginUser();
   const { register, getValues, formState } = useForm();
   const [error, setError] = useState<{ hasError: boolean; message?: ResourcesKey }>({
     hasError: false
@@ -36,25 +30,7 @@ export const LoginPage: React.FC = () => {
       if (!user) {
         setError({ hasError: true, message: ResourcesKey.signInErrorMessage });
       } else {
-        const roleMap = new Map([
-          [
-            Role.PersonalTrainer,
-            {
-              state: LoginState.personalTrainerLogged,
-              path: PersonalTrainerDefaultPage
-            }
-          ],
-          [
-            Role.Student,
-            {
-              state: LoginState.studentLogged,
-              path: StudentDefaultPage
-            }
-          ]
-        ]);
-        const { state, path } = roleMap.get(user.role);
-        setLogged({ state, user });
-        navigate(`/${path}`);
+        loginUser(user);
       }
     } catch (error) {
       setError({ hasError: true, message: ResourcesKey.unexpectedErrorMessage });

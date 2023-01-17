@@ -4,6 +4,7 @@ export enum LoginState {
   studentLogged = "studentLogged"
 }
 
+export const DefaultPage = "" as Page;
 export enum NoUserLoggedPage {
   home = "",
   aboutUs = "about-us",
@@ -11,17 +12,14 @@ export enum NoUserLoggedPage {
   joinUs = "join-us",
   login = "login"
 }
-export const NoUserLoggedDefaultPage = NoUserLoggedPage.home;
 
 export enum PersonalTrainerLoggedPage {
   studentList = "",
   profile = "my-profile"
 }
-export const PersonalTrainerDefaultPage = PersonalTrainerLoggedPage.studentList;
 
 export enum StudentLoggedPage {
   profile = ""
 }
-export const StudentDefaultPage = StudentLoggedPage.profile;
 
-export type Page = NoUserLoggedPage | PersonalTrainerLoggedPage | StudentLoggedPage;
+export type Page = NoUserLoggedPage | PersonalTrainerLoggedPage | StudentLoggedPage | "";

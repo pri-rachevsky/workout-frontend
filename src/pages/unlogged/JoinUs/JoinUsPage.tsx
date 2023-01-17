@@ -1,17 +1,12 @@
 import { Alert, Button, Card, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 import { PageLoadingWrapper } from "../../../components/PageLoadingWrapper/PageLoadingWrapper";
-import { LoggedContext } from "../../../contexts/logged.context";
 import { useI18n } from "../../../hooks/useI18n";
-import {
-  LoginState,
-  NoUserLoggedPage,
-  PersonalTrainerDefaultPage,
-  StudentDefaultPage
-} from "../../../models/systemMode";
+import { useLoginUser } from "../../../hooks/useLoginUser";
+import { NoUserLoggedPage } from "../../../models/systemMode";
 import { Role } from "../../../models/user";
 import { UserService } from "../../../service/user.service";
 import "./JoinUs.scss";
@@ -27,7 +22,7 @@ type RegistrationForm = {
 export const JoinUsPage: React.FC = () => {
   const { translate } = useI18n(resources);
   const navigate = useNavigate();
-  const { setLogged } = useContext(LoggedContext);
+  const { loginUser } = useLoginUser();
   const { register, getValues, formState } = useForm<RegistrationForm>();
   const [error, setError] = useState<{ hasError: boolean; message?: ResourcesKey }>({
     hasError: false
@@ -45,26 +40,7 @@ export const JoinUsPage: React.FC = () => {
         return;
       }
       const user = await UserService.create({ username, password, role, name: fullName });
-
-      const roleMap = new Map([
-        [
-          Role.PersonalTrainer,
-          {
-            state: LoginState.personalTrainerLogged,
-            path: PersonalTrainerDefaultPage
-          }
-        ],
-        [
-          Role.Student,
-          {
-            state: LoginState.studentLogged,
-            path: StudentDefaultPage
-          }
-        ]
-      ]);
-      const { state, path } = roleMap.get(user.role);
-      setLogged({ state, user });
-      navigate(`/${path}`);
+      loginUser(user);
     } catch (error) {
       const message =
         error.message === "username already exists" ? ResourcesKey.usernameErrorMsg : ResourcesKey.unexpectedErrorMsg;

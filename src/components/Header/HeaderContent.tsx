@@ -2,7 +2,7 @@ import React from "react";
 import { Tab, Tabs } from "@mui/material";
 import { useI18n } from "../../hooks/useI18n";
 import {
-  NoUserLoggedDefaultPage,
+  DefaultPage,
   NoUserLoggedPage,
   Page,
   PersonalTrainerLoggedPage,
@@ -24,7 +24,7 @@ export const NoUserLoggedHeaderContent: React.FC<HeaderContentProps> = ({ tabSel
   const { translate } = useI18n(resources);
   return (
     <>
-      <HeaderLogo onClick={() => onTabSelected(NoUserLoggedDefaultPage)} />
+      <HeaderLogo onClick={() => onTabSelected(DefaultPage)} />
       <Tabs value={tabSelected} onChange={(_, tab) => onTabSelected(tab)}>
         <Tab label={translate(ResourcesKey.home)} value={NoUserLoggedPage.home} />
         <Tab label={translate(ResourcesKey.aboutUs)} value={NoUserLoggedPage.aboutUs} />
